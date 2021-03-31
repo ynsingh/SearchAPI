@@ -9,7 +9,12 @@ public class ForwardQuery {
             System.out.println("Query is Duplicate");
             //do nothing now
         }
-        else System.out.println("Query is Unique");
+        else {
+            System.out.println("Query is Unique");
+            LinkedList.insert(listname, data1,data2, data3, data4, data5);
+        }
+
+
         // Query is not duplicate and is to be added and put in Output Buffer
     }
 }

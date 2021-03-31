@@ -247,6 +247,7 @@ public class LinkedList {
         }
     }
 
+    //search any sequencenumber in list
     public static int searchinList(LinkedList listname, int i) {
         if (listname.head == null) {
             return -1;

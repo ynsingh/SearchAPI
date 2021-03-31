@@ -6,6 +6,13 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import java.util.*;
+
+
+
+
+
+
 
 
 public class LuceneTester {
@@ -56,18 +63,48 @@ public class LuceneTester {
         // System.out.println(numIndexed+" File indexed, time taken: " +(endTime-startTime)+" ms");
     }
 
+    /*private void search(String searchQuery) throws IOException, ParseException {
+        searcher = new Searcher(indexDir);
+        long startTime = System.currentTimeMillis();
+        TopDocs hits = searcher.search(searchQuery);
+        long endTime = System.currentTimeMillis();
+        // System.out.println(hits.totalHits + " documents found. Time :" + (endTime - startTime));
+        for(ScoreDoc scoreDoc : hits.scoreDocs) {
+            Document doc = searcher.getDocument(scoreDoc);
+            System.out.println("File: " + doc.get(LuceneConstants.FILE_PATH));
+        }
+        searcher.close();
+    }*/
+
+
+
+
+
+
     private void search(String searchQuery) throws IOException, ParseException {
         searcher = new Searcher(indexDir);
         long startTime = System.currentTimeMillis();
         TopDocs hits = searcher.search(searchQuery);
         long endTime = System.currentTimeMillis();
 
-        // System.out.println(hits.totalHits + " documents found. Time :" + (endTime - startTime));
-        for(ScoreDoc scoreDoc : hits.scoreDocs) {
+
+        List<String> result = new ArrayList<String>();
+
+          for(ScoreDoc scoreDoc : hits.scoreDocs) {
             Document doc = searcher.getDocument(scoreDoc);
-            System.out.println("File: "
-                    + doc.get(LuceneConstants.FILE_PATH));
+            result.add(doc.get(LuceneConstants.FILE_PATH)) ;
         }
+        createFile.createResultFile(result);
         searcher.close();
+        for(String indlresult:result)
+            System.out.println(indlresult);
+
     }
+
+
+
+
+
+
+
 }
