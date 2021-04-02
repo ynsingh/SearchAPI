@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 
                 // root elements
                 Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("query");
+                Element rootElement = doc.createElement("Queryfile");
                 doc.appendChild(rootElement);
 
                 // staff elements
@@ -72,7 +72,7 @@ import org.w3c.dom.Element;
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in/file"+d1+".xml"));
+                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/file"+d1+".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
@@ -97,12 +97,12 @@ import org.w3c.dom.Element;
 
                 // root elements
                 Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("result");
+                Element rootElement = doc.createElement("Resultfile");
                 doc.appendChild(rootElement);
 
                 // staff elements
-                Element resultel = doc.createElement("result");
-                rootElement.appendChild(resultel);
+                //Element resultel = doc.createElement("result");
+                //rootElement.appendChild(resultel);
 
                 // set attribute to staff element
                 //Attr attr = doc.createAttribute("From Node");
@@ -112,13 +112,22 @@ import org.w3c.dom.Element;
                 // shorten way
                 // staff.setAttribute("id", "1");
 
-                for(int i=1; i<=result.size(); i++)
+                for(int i=0; i<result.size(); i++)
                 {
-                    String r = (String) result.get(1);
-                    Element result1 = doc.createElement("result"+i);
-                    result1.appendChild(doc.createTextNode(r));
-                    resultel.appendChild(result1);
+                    Element resultel = doc.createElement("result");
+                    rootElement.appendChild(resultel);
+
+                    // set attribute to staff element
+                    Attr attr = doc.createAttribute("Serial_No-");
+                    attr.setValue(String.valueOf(i));
+                    resultel.setAttributeNode(attr);
+
+                    Element resultelement = doc.createElement("file_address");
+                    String r = (String) result.get(i);
+                    resultelement.appendChild(doc.createTextNode(r));
+                    resultel.appendChild(resultelement);
                 }
+
 
                 // write the content into xml file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();

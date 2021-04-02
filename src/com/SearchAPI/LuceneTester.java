@@ -1,18 +1,11 @@
 package com.SearchAPI;
 
-
 import java.io.IOException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import java.util.*;
-
-
-
-
-
-
 
 
 public class LuceneTester {
@@ -94,10 +87,12 @@ public class LuceneTester {
             Document doc = searcher.getDocument(scoreDoc);
             result.add(doc.get(LuceneConstants.FILE_PATH)) ;
         }
-        createFile.createResultFile(result);
+
         searcher.close();
-        for(String indlresult:result)
-            System.out.println(indlresult);
+          //for(String indlresult:result)
+          //  System.out.println(indlresult);
+           createFile.createResultFile(result);
+
 
     }
 

@@ -40,7 +40,7 @@ public class LinkedList {
 
     // **************INSERTION**************
 
-    // Method to insert a new node
+    // Method to insert a new node in Broadcast Query Table
     public static LinkedList insert(LinkedList list, int data1, String data2, int data3, int data4, int data5) {
         // Create a new node with given data
         String data6 = TimeStamp.currentTime();
@@ -66,7 +66,9 @@ public class LinkedList {
         // Return the list by head
         return list;
     }
-    // Method to insert a node from file
+
+
+    // Method to insert all nodes from saved file to Broadcast Query Table
     public static LinkedList oldInsert(LinkedList list, int data1, String data2, int data3, int data4, int data5, String data6) {
         // Create a new node with given data
         Node new_node = new Node(data1, data2, data3, data4, data5, data6);
@@ -98,7 +100,7 @@ public class LinkedList {
     public static void printList(LinkedList list) {
         Node currNode = list.head;
 
-        System.out.print("\nLinkedList: \n");
+        System.out.print("\nBroadcast Query Table: \n");
 
         // Traverse through the LinkedList
         while (currNode != null) {
@@ -210,7 +212,6 @@ public class LinkedList {
     public static void loadList(LinkedList listname) {
         try {
             String filePath = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.txt";
-            //System.out.println( readLineByLine( filePth ) );
 
             String str = readLineByLine(filePath);
             String[] arrSplit = str.split("\\s");
@@ -222,7 +223,8 @@ public class LinkedList {
                 int d4 = Integer.parseInt(arrSplit[i + 3]);
                 int d5 = Integer.parseInt(arrSplit[i + 4]);
                 String d6 = arrSplit[i+5];
-                listname = oldInsert(listname, d1, d2, d3, d4, d5, d6);
+               // listname = oldInsert(listname, d1, d2, d3, d4, d5, d6);
+                oldInsert(listname, d1, d2, d3, d4, d5, d6);
                 i = i + 6;
             }
         } catch (Exception e) {
@@ -277,30 +279,29 @@ public class LinkedList {
     }
 
     public static boolean checkDuplicateQuery(LinkedList listname, int i, String s) {
+
+        boolean duplicate = false;
+
         if (listname.head == null) {
             return false;
         }
 
-        int index = 1;
-        Node temp = listname.head;
+        else {
 
-        // While loop is used to search the entire Linked
-        while (temp != null) {
+            Node temp = listname.head;
 
-            // Returns the index of that particular element,
-            // if found.
-            if (temp.data1 == i && temp.data2 == s) {
-                return true;
+            while (temp != null) {
+
+                // Returns the index of that particular element if found.
+                if (temp.data1 == i && temp.data2.equals(s)) {
+                    duplicate = true;
+                    break;
+                }
+                temp = temp.next;
             }
 
-            // Gradually increases index while
-            // traversing through the Linked List
-            index++;
-            temp = temp.next;
+            return duplicate;
         }
-
-        // Returns -1 if the element is not found
-        return false;
     }
 
 
