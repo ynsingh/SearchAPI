@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 
     public class createFile {
 
-        public static void createQueryFile(int d1, String d2, int d3, int d4, int d5, String d6 ) {
+        public static void createQueryFile(String d1, String d2, String d3, String d4, int d5, String d6 ) {
 
             try {
 
@@ -72,7 +72,7 @@ import org.w3c.dom.Element;
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/file"+d1+".xml"));
+                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Query"+d1+".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
@@ -88,7 +88,7 @@ import org.w3c.dom.Element;
             }
         }
 
-        public static void createResultFile( List result) {
+        public static void createResultFile(List result) {
 
             try {
 
@@ -134,8 +134,8 @@ import org.w3c.dom.Element;
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
 
-                int nodeID = 111;
-                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/file"+nodeID+".xml"));
+                int NodeID = 111;
+                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Result"+NodeID+".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
@@ -150,6 +150,8 @@ import org.w3c.dom.Element;
                 tfe.printStackTrace();
             }
         }
+
+
 
 
 

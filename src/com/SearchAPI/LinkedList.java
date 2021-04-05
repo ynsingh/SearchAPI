@@ -18,16 +18,16 @@ public class LinkedList {
     // Linked list Node. Node is a static nested class so main() can access it
     static class Node {
 
-        int data1;
+        String data1;
         String data2;
-        int data3;
-        int data4;
+        String data3;
+        String data4;
         int data5;
         String data6;
         Node next;
 
         // Constructor
-        Node(int d1, String d2, int d3, int d4, int d5, String d6) {
+        Node(String d1, String d2, String d3, String d4, int d5, String d6) {
             data1 = d1;
             data2 = d2;
             data3 = d3;
@@ -41,7 +41,7 @@ public class LinkedList {
     // **************INSERTION**************
 
     // Method to insert a new node in Broadcast Query Table
-    public static LinkedList insert(LinkedList list, int data1, String data2, int data3, int data4, int data5) {
+    public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4, int data5) {
         // Create a new node with given data
         String data6 = TimeStamp.currentTime();
         Node new_node = new Node(data1, data2, data3, data4, data5, data6);
@@ -69,7 +69,7 @@ public class LinkedList {
 
 
     // Method to insert all nodes from saved file to Broadcast Query Table
-    public static LinkedList oldInsert(LinkedList list, int data1, String data2, int data3, int data4, int data5, String data6) {
+    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4, int data5, String data6) {
         // Create a new node with given data
         Node new_node = new Node(data1, data2, data3, data4, data5, data6);
         new_node.next = null;
@@ -120,14 +120,14 @@ public class LinkedList {
     }
 
     // Method to print the LinkedList by key.
-    public static void printKey(LinkedList listname, int key)
+    public static void printKey(LinkedList listname, String key)
     {
         Node currNode = listname.head;
         System.out.print("\nLinkedList by Key: \n");
 
         while (currNode != null) {
 
-            if(currNode.data1 == key)
+            if(currNode.data1.equals(key))
             {
                 System.out.print(currNode.data1 + " ");
                 System.out.print(currNode.data2 + " ");
@@ -144,14 +144,14 @@ public class LinkedList {
     // **************DELETION BY KEY**************
 
     // Method to delete a node in the LinkedList by KEY
-    public static LinkedList deleteByKey(LinkedList list, int key) {
+    public static LinkedList deleteByKey(LinkedList list, String key) {
         // Store head node
         Node currNode = list.head, prev = null;
 
         // CASE 1:
         // If head node itself holds the key to be deleted
 
-        if (currNode != null && currNode.data1 == key) {
+        if (currNode != null && currNode.data1.equals(key)) {
             list.head = currNode.next; // Changed head
 
             // Display the message
@@ -214,13 +214,16 @@ public class LinkedList {
             String filePath = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.txt";
 
             String str = readLineByLine(filePath);
-            String[] arrSplit = str.split("\\s");
+            String[] arrSplit = str.split(":");
             int i = 0;
             while (i < arrSplit.length) {
-                int d1 = Integer.parseInt(arrSplit[i]);
+                //int d1 = Integer.parseInt(arrSplit[i]);
+                String d1 = arrSplit[i];
                 String d2 = arrSplit[i + 1];
-                int d3 = Integer.parseInt(arrSplit[i + 2]);
-                int d4 = Integer.parseInt(arrSplit[i + 3]);
+                String d3 = arrSplit[i + 2];
+                String d4 = arrSplit[i + 3];
+                // int d3 = Integer.parseInt(arrSplit[i + 2]);
+                //int d4 = Integer.parseInt(arrSplit[i + 3]);
                 int d5 = Integer.parseInt(arrSplit[i + 4]);
                 String d6 = arrSplit[i+5];
                // listname = oldInsert(listname, d1, d2, d3, d4, d5, d6);
@@ -239,8 +242,10 @@ public class LinkedList {
             PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             Node currNode = listname.head;
             while (currNode != null) {
-                texttosave.println(currNode.data1 + " " + currNode.data2 + " " + currNode.data3
-                        + " " + currNode.data4 + " " + currNode.data5 + " " + currNode.data6);
+                //texttosave.println(currNode.data1 + " " + currNode.data2 + " " + currNode.data3
+                //       + " " + currNode.data4 + " " + currNode.data5 + " " + currNode.data6);
+                texttosave.println(currNode.data1 + ":" + currNode.data2 + ":" + currNode.data3
+                                + ":" + currNode.data4 + ":" + currNode.data5 + ":" + currNode.data6);
                 currNode = currNode.next;
             }
             texttosave.close();
@@ -250,7 +255,7 @@ public class LinkedList {
     }
 
     //search any sequencenumber in list
-    public static int searchinList(LinkedList listname, int i) {
+    public static int searchinList(LinkedList listname, String i) {
         if (listname.head == null) {
             return -1;
         }
@@ -264,7 +269,7 @@ public class LinkedList {
 
             // Returns the index of that particular element,
             // if found.
-            if (temp.data1 == i) {
+            if (temp.data1.equals(i)) {
                 return index;
             }
 
@@ -278,7 +283,7 @@ public class LinkedList {
         return -1;
     }
 
-    public static boolean checkDuplicateQuery(LinkedList listname, int i, String s) {
+    public static boolean checkDuplicateQuery(LinkedList listname, String i, String s) {
 
         boolean duplicate = false;
 
@@ -293,7 +298,7 @@ public class LinkedList {
             while (temp != null) {
 
                 // Returns the index of that particular element if found.
-                if (temp.data1 == i && temp.data2.equals(s)) {
+                if (temp.data1.equals(i) && temp.data2.equals(s)) {
                     duplicate = true;
                     break;
                 }

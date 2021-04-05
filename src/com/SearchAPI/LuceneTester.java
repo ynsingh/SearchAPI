@@ -7,6 +7,8 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import java.util.*;
 
+import static com.SearchAPI.createFile.createResultFile;
+
 
 public class LuceneTester {
 
@@ -91,15 +93,8 @@ public class LuceneTester {
         searcher.close();
           //for(String indlresult:result)
           //  System.out.println(indlresult);
-           createFile.createResultFile(result);
-
+           createResultFile(result);
 
     }
-
-
-
-
-
-
 
 }
