@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Queryfile>
-<query SequenceNumber="2">
-	<queryString>Meena</queryString>
-	<sourceNodeID>12</sourceNodeID>
-	<endPointAddress>13</endPointAddress>
-	<TTL>14</TTL>
-	<timeStamp>03.12.11.36.26.206</timeStamp>
-	</query>
-</Queryfile>

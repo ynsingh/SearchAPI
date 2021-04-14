@@ -1,7 +1,6 @@
 package com.SearchAPI;
 
 import java.io.*;
-import java.util.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +11,8 @@ import java.util.stream.Stream;
 
 // Java program to implement a Singly Linked List
 public class LinkedList {
+
+    public static LinkedList list = new LinkedList();
 
     Node head; // head of list
 
@@ -68,31 +69,7 @@ public class LinkedList {
     }
 
 
-    // Method to insert all nodes from saved file to Broadcast Query Table
-    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4, int data5, String data6) {
-        // Create a new node with given data
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6);
-        new_node.next = null;
 
-        // If the Linked List is empty,
-        // then make the new node as head
-        if (list.head == null) {
-            list.head = new_node;
-        } else {
-            // Else traverse till the last node
-            // and insert the new_node there
-            Node last = list.head;
-            while (last.next != null) {
-                last = last.next;
-            }
-
-            // Insert the new_node at last node
-            last.next = new_node;
-        }
-
-        // Return the list by head
-        return list;
-    }
 
     // **************TRAVERSAL**************
 
@@ -209,12 +186,40 @@ public class LinkedList {
         return contentBuilder.toString();
     }
 
+
+    // Method to insert all nodes from saved file to Broadcast Query Table
+    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4, int data5, String data6) {
+        // Create a new node with given data
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6);
+        new_node.next = null;
+
+        // If the Linked List is empty,
+        // then make the new node as head
+        if (list.head == null) {
+            list.head = new_node;
+        } else {
+            // Else traverse till the last node
+            // and insert the new_node there
+            Node last = list.head;
+            while (last.next != null) {
+                last = last.next;
+            }
+
+            // Insert the new_node at last node
+            last.next = new_node;
+        }
+
+        // Return the list by head
+        return list;
+    }
+
     public static void loadList(LinkedList listname) {
+/*
         try {
             String filePath = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.txt";
 
             String str = readLineByLine(filePath);
-            String[] arrSplit = str.split(":");
+            String[] arrSplit = str.split("\\s");
             int i = 0;
             while (i < arrSplit.length) {
                 //int d1 = Integer.parseInt(arrSplit[i]);
@@ -233,19 +238,52 @@ public class LinkedList {
         } catch (Exception e) {
             System.out.println("error");
         }
+
+*/
+
+
+        String line = "";
+        String splitBy = ", ";
+        try
+        {
+            //parsing a CSV file into BufferedReader class constructor
+            BufferedReader br = new BufferedReader(new FileReader("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv"));
+
+            if((line = br.readLine()) == null){
+
+            }
+
+            while ((line = br.readLine()) != null)   //returns a Boolean value
+            {
+                String[] arrSplit = line.split(splitBy);    // use comma as separator
+                String d1 = arrSplit[0];
+                String d2 = arrSplit[1];
+                String d3 = arrSplit[2];
+                String d4 = arrSplit[3];
+                int d5 = Integer.parseInt(arrSplit[4]);
+                String d6 = arrSplit[5];
+                oldInsert(listname, d1, d2, d3, d4, d5, d6);
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("error");
+            e.printStackTrace();
+        }
+
     }
 
 
     public static void saveList(LinkedList listname) {
         try {
-            File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.txt");
+            File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv");
             PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             Node currNode = listname.head;
             while (currNode != null) {
-                //texttosave.println(currNode.data1 + " " + currNode.data2 + " " + currNode.data3
-                //       + " " + currNode.data4 + " " + currNode.data5 + " " + currNode.data6);
-                texttosave.println(currNode.data1 + ":" + currNode.data2 + ":" + currNode.data3
-                                + ":" + currNode.data4 + ":" + currNode.data5 + ":" + currNode.data6);
+                texttosave.println(currNode.data1 + ", " + currNode.data2 + ", " + currNode.data3
+                       + ", " + currNode.data4 + ", " + currNode.data5 + ", " + currNode.data6);
+                //texttosave.println(currNode.data1 + ":" + currNode.data2 + ":" + currNode.data3
+                //                + ":" + currNode.data4 + ":" + currNode.data5 + ":" + currNode.data6);
                 currNode = currNode.next;
             }
             texttosave.close();

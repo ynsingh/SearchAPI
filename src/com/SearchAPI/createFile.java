@@ -31,11 +31,10 @@ import org.w3c.dom.Element;
                 Element rootElement = doc.createElement("Queryfile");
                 doc.appendChild(rootElement);
 
-                // staff elements
+
                 Element query = doc.createElement("query");
                 rootElement.appendChild(query);
 
-                // set attribute to staff element
                 Attr attr = doc.createAttribute("SequenceNumber");
                 attr.setValue(String.valueOf(d1));
                 query.setAttributeNode(attr);
@@ -43,27 +42,22 @@ import org.w3c.dom.Element;
                 // shorten way
                 // staff.setAttribute("id", "1");
 
-                // firstname elements
                 Element queryString = doc.createElement("queryString");
                 queryString.appendChild(doc.createTextNode(d2));
                 query.appendChild(queryString);
 
-                // lastname elements
                 Element sourceNodeID = doc.createElement("sourceNodeID");
                 sourceNodeID.appendChild(doc.createTextNode(String.valueOf(d3)));
                 query.appendChild(sourceNodeID);
 
-                // nickname elements
                 Element endPointAddress = doc.createElement("endPointAddress");
                 endPointAddress.appendChild(doc.createTextNode(String.valueOf(d4)));
                 query.appendChild(endPointAddress);
 
-                // salary elements
                 Element TTL = doc.createElement("TTL");
                 TTL.appendChild(doc.createTextNode(String.valueOf(d5)));
                 query.appendChild(TTL);
 
-                // salary elements
                 Element timeStamp = doc.createElement("timeStamp");
                 timeStamp.appendChild(doc.createTextNode(d6));
                 query.appendChild(timeStamp);
@@ -72,14 +66,14 @@ import org.w3c.dom.Element;
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Query"+d1+".xml"));
+                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Query-"+d1+".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
 
                 transformer.transform(source, result);
 
-                System.out.println("File saved!");
+                System.out.println("Query Forwarded!");
 
             } catch (ParserConfigurationException pce) {
                 pce.printStackTrace();
@@ -97,27 +91,16 @@ import org.w3c.dom.Element;
 
                 // root elements
                 Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("Resultfile");
+                Element rootElement = doc.createElement("Responsefile");
                 doc.appendChild(rootElement);
 
-                // staff elements
-                //Element resultel = doc.createElement("result");
-                //rootElement.appendChild(resultel);
-
-                // set attribute to staff element
-                //Attr attr = doc.createAttribute("From Node");
-                //attr.setValue(String.valueOf(nodeID));
-                //resultel.setAttributeNode(attr);
-
-                // shorten way
-                // staff.setAttribute("id", "1");
 
                 for(int i=0; i<result.size(); i++)
                 {
                     Element resultel = doc.createElement("result");
                     rootElement.appendChild(resultel);
 
-                    // set attribute to staff element
+                    // set attribute element
                     Attr attr = doc.createAttribute("Serial_No-");
                     attr.setValue(String.valueOf(i));
                     resultel.setAttributeNode(attr);
@@ -134,15 +117,16 @@ import org.w3c.dom.Element;
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
 
-                int NodeID = 111;
-                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Result"+NodeID+".xml"));
+                String a = ForwardQuery.elements();
+                String NodeID = QueryManager.NodeID;
+                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Response-"+a+"-"+NodeID+".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
 
                 transformer.transform(source, resultfile);
 
-                System.out.println("File saved!");
+                System.out.println("Response Forwarded!");
 
             } catch (ParserConfigurationException pce) {
                 pce.printStackTrace();

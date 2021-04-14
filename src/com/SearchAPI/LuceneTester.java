@@ -91,9 +91,17 @@ public class LuceneTester {
         }
 
         searcher.close();
-          //for(String indlresult:result)
-          //  System.out.println(indlresult);
-           createResultFile(result);
+
+        boolean ans = result.isEmpty();
+        if (ans == true) {
+            System.out.println("The ArrayList is empty");
+        }
+        else{
+            for(String indlresult:result)
+                System.out.println(indlresult);
+            //createResultFile(result);
+        }
+
 
     }
 
