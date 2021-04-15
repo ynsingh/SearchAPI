@@ -33,13 +33,13 @@ public class Searcher {
                 new StandardAnalyzer(Version.LUCENE_36));
     }
 
-    /*public Searcher(String indexDirectoryPath)
+   /* public Searcher(String indexDirectoryPath)
             throws IOException {
         Directory indexDirectory =
                 FSDirectory.open(new File(indexDirectoryPath));
         indexSearcher = new IndexSearcher(indexDirectory);
         queryParser = new QueryParser(Version.LUCENE_36,
-                LuceneConstants.FILE_NAME,
+                new String[] {"filename", "contents"},
                 new StandardAnalyzer(Version.LUCENE_36));
     }*/
 

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class QueryManager {
 
-    public static String NodeID = "7e5a7fda92ad93469da0";
 
     //public static RoutingManagerBuffer routingManagerBuffer;
     public static Buffer Buffer;
@@ -59,7 +58,7 @@ public class QueryManager {
 
 
 
-        Buffer = Buffer.getInstance();
+        /*Buffer = Buffer.getInstance();
 
         File file = new File("/Users/rex/Desktop/Query-Ramesh.xml");
         //File file = new File("/Users/rex/Desktop/Response-211236-7e5a7fda92ad93469da9.xml");
@@ -69,12 +68,11 @@ public class QueryManager {
 
         //Compiled Result file added to output buffer at readfile comment or uncomment both
         //csvFileReader.read(String.valueOf(routingManagerBuffer.getFileFromOutputBuffer()));
+         */
 
+        //get self IDs
+        ReadNeighborTable.getselfID();
 
-
-
-        //Saving Broadcast Query Table to File
-        LinkedList.saveList(LinkedList.list);
     }
 }
 

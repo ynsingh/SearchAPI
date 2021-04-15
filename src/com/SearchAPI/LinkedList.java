@@ -23,18 +23,22 @@ public class LinkedList {
         String data2;
         String data3;
         String data4;
-        int data5;
+        String data5;
         String data6;
+        int data7;
+        String data8;
         Node next;
 
         // Constructor
-        Node(String d1, String d2, String d3, String d4, int d5, String d6) {
+        Node(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8) {
             data1 = d1;
             data2 = d2;
             data3 = d3;
             data4 = d4;
             data5 = d5;
             data6 = d6;
+            data7 = d7;
+            data8 = d8;
             next = null;
         }
     }
@@ -42,10 +46,10 @@ public class LinkedList {
     // **************INSERTION**************
 
     // Method to insert a new node in Broadcast Query Table
-    public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4, int data5) {
+    public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4, String data5, String data6, int data7, String data8) {
         // Create a new node with given data
-        String data6 = TimeStamp.currentTime();
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6);
+        //String data6 = TimeStamp.currentTime();
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
         new_node.next = null;
 
         // If the Linked List is empty,
@@ -88,6 +92,9 @@ public class LinkedList {
             System.out.print(currNode.data4 + " ");
             System.out.print(currNode.data5 + " ");
             System.out.print(currNode.data6 + " ");
+            System.out.print(currNode.data7 + " ");
+            System.out.print(currNode.data8 + " ");
+
             System.out.println("\n");
 
             // Go to next node
@@ -112,6 +119,8 @@ public class LinkedList {
                 System.out.print(currNode.data4 + " ");
                 System.out.print(currNode.data5 + " ");
                 System.out.print(currNode.data6 + " ");
+                System.out.print(currNode.data7 + " ");
+                System.out.print(currNode.data8 + " ");
             }
             currNode = currNode.next;
         }
@@ -188,9 +197,9 @@ public class LinkedList {
 
 
     // Method to insert all nodes from saved file to Broadcast Query Table
-    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4, int data5, String data6) {
+    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4, String data5, String data6, int data7, String data8) {
         // Create a new node with given data
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6);
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
         new_node.next = null;
 
         // If the Linked List is empty,
@@ -260,9 +269,11 @@ public class LinkedList {
                 String d2 = arrSplit[1];
                 String d3 = arrSplit[2];
                 String d4 = arrSplit[3];
-                int d5 = Integer.parseInt(arrSplit[4]);
+                String d5 = arrSplit[4];
                 String d6 = arrSplit[5];
-                oldInsert(listname, d1, d2, d3, d4, d5, d6);
+                int d7 = Integer.parseInt(arrSplit[6]);
+                String d8 = arrSplit[7];
+                oldInsert(listname, d1, d2, d3, d4, d5, d6, d7, d8);
             }
         }
         catch (IOException e)

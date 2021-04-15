@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 
     public class createFile {
 
-        public static void createQueryFile(String d1, String d2, String d3, String d4, int d5, String d6 ) {
+        public static void createQueryFile(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8 ) {
 
             try {
 
@@ -53,6 +53,14 @@ import org.w3c.dom.Element;
                 Element endPointAddress = doc.createElement("endPointAddress");
                 endPointAddress.appendChild(doc.createTextNode(String.valueOf(d4)));
                 query.appendChild(endPointAddress);
+
+                Element portaddress = doc.createElement("portaddress");
+                portaddress.appendChild(doc.createTextNode(String.valueOf(d4)));
+                query.appendChild(portaddress);
+
+                Element transport = doc.createElement("transport");
+                transport.appendChild(doc.createTextNode(String.valueOf(d4)));
+                query.appendChild(transport);
 
                 Element TTL = doc.createElement("TTL");
                 TTL.appendChild(doc.createTextNode(String.valueOf(d5)));
@@ -118,7 +126,7 @@ import org.w3c.dom.Element;
                 DOMSource source = new DOMSource(doc);
 
                 String a = ForwardQuery.elements();
-                String NodeID = QueryManager.NodeID;
+                String NodeID = SearchConstants.selfNodeID;
                 StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Response-"+a+"-"+NodeID+".xml"));
 
                 // Output to console for testing

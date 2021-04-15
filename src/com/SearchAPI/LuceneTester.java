@@ -94,15 +94,45 @@ public class LuceneTester {
 
         boolean ans = result.isEmpty();
         if (ans == true) {
-            System.out.println("The ArrayList is empty");
+            System.out.println("No such File in Index");
         }
         else{
-            for(String indlresult:result)
-                System.out.println(indlresult);
-            //createResultFile(result);
+            //for(String indlresult:result)
+            //    System.out.println(indlresult);
+            createResultFile(result);
         }
 
 
     }
+
+    private void dolocalsearch(String searchQuery) throws IOException, ParseException {
+        searcher = new Searcher(indexDir);
+        long startTime = System.currentTimeMillis();
+        TopDocs hits = searcher.search(searchQuery);
+        long endTime = System.currentTimeMillis();
+
+
+        List<String> result = new ArrayList<String>();
+
+        for(ScoreDoc scoreDoc : hits.scoreDocs) {
+            Document doc = searcher.getDocument(scoreDoc);
+            result.add(doc.get(LuceneConstants.FILE_PATH)) ;
+        }
+
+        searcher.close();
+
+        boolean ans = result.isEmpty();
+        if (ans == true) {
+            System.out.println("No such File in Index");
+        }
+        else{
+            //for(String indlresult:result)
+            //    System.out.println(indlresult);
+            OwnQuery.passLocalResponse(result);
+        }
+
+
+    }
+
 
 }

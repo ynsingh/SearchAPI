@@ -12,10 +12,6 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-class queryElements{
-
-}
-
 public class readFile {
 
     public static String filename = "";
@@ -65,6 +61,8 @@ public class readFile {
                     readfile_elements.add(eElement.getElementsByTagName("queryString").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("sourceNodeID").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("endPointAddress").item(0).getTextContent());
+                    readfile_elements.add(eElement.getElementsByTagName("portaddress").item(0).getTextContent());
+                    readfile_elements.add(eElement.getElementsByTagName("transport").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("TTL").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("timeStamp").item(0).getTextContent());
 
@@ -73,9 +71,10 @@ public class readFile {
                 //    System.out.println(readfile_elements.get(i));
                 //}
 
-                ForwardQuery.forwardGlobalQuery(LinkedList.list, String.valueOf(readfile_elements.get(0)),String.valueOf(readfile_elements.get(1)),
+                ForwardQuery.forwardPeerQuery(LinkedList.list, String.valueOf(readfile_elements.get(0)),String.valueOf(readfile_elements.get(1)),
                         String.valueOf(readfile_elements.get(2)),String.valueOf(readfile_elements.get(3)),
-                        Integer.parseInt(String.valueOf(readfile_elements.get(4))),String.valueOf(readfile_elements.get(5)));
+                        String.valueOf(readfile_elements.get(4)),String.valueOf(readfile_elements.get(5)),
+                        Integer.parseInt(String.valueOf(readfile_elements.get(6))),String.valueOf(readfile_elements.get(7)));
 
 
 
