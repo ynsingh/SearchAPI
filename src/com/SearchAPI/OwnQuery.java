@@ -3,6 +3,7 @@ package com.SearchAPI;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.UUID;
 
 public class OwnQuery {
 
@@ -10,12 +11,10 @@ public class OwnQuery {
 
         if(Global == true) {// Query in Peers
             String TStamp = TimeStamp.currentTime();
-            String Seq = "1";
-            //create a query file and send query to all neighbors
-            createFile.createQueryFile(Seq, queryString, SearchConstants.selfNodeID, SearchConstants.selfIPAddress,
-                    SearchConstants.selfPortAddress, SearchConstants.selfTransport , SearchConstants.TTL, TStamp  );
-            // update Broadcast Query Table
-            ForwardQuery.forwardOwnQuery(LinkedList.list, Seq, queryString, SearchConstants.selfNodeID,
+            UUID uuid = UUID.randomUUID();
+            String Sequence = uuid.toString();
+           // update Broadcast Query Table
+            ForwardQuery.forwardOwnQuery(LinkedList.list, Sequence, queryString, SearchConstants.selfNodeID,
                     SearchConstants.selfIPAddress, SearchConstants.selfPortAddress, SearchConstants.selfTransport, SearchConstants.TTL, TStamp);
         }
         else{

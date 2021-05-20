@@ -27,7 +27,7 @@ public class listFiles {
 
            // Get the names of the files by using the .getName() method
            for (int i = 0; i < files.length; i++) {
-               //System.out.println(files[i].getName());
+               System.out.println(files[i].getName());
 
 
                /*String Str = String.valueOf(files[i].getName());

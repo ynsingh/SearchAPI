@@ -28,8 +28,10 @@ import org.w3c.dom.Element;
 
                 // root elements
                 Document doc = docBuilder.newDocument();
+
                 Element rootElement = doc.createElement("Queryfile");
                 doc.appendChild(rootElement);
+                rootElement.setAttribute("Destination", SearchConstants.neighnorTable);
 
 
                 Element query = doc.createElement("query");
@@ -55,19 +57,19 @@ import org.w3c.dom.Element;
                 query.appendChild(endPointAddress);
 
                 Element portaddress = doc.createElement("portaddress");
-                portaddress.appendChild(doc.createTextNode(String.valueOf(d4)));
+                portaddress.appendChild(doc.createTextNode(String.valueOf(d5)));
                 query.appendChild(portaddress);
 
                 Element transport = doc.createElement("transport");
-                transport.appendChild(doc.createTextNode(String.valueOf(d4)));
+                transport.appendChild(doc.createTextNode(String.valueOf(d6)));
                 query.appendChild(transport);
 
                 Element TTL = doc.createElement("TTL");
-                TTL.appendChild(doc.createTextNode(String.valueOf(d5)));
+                TTL.appendChild(doc.createTextNode(String.valueOf(d7)));
                 query.appendChild(TTL);
 
                 Element timeStamp = doc.createElement("timeStamp");
-                timeStamp.appendChild(doc.createTextNode(d6));
+                timeStamp.appendChild(doc.createTextNode(d8));
                 query.appendChild(timeStamp);
 
                 // write the content into xml file
@@ -81,7 +83,7 @@ import org.w3c.dom.Element;
 
                 transformer.transform(source, result);
 
-                System.out.println("Query Forwarded!");
+                System.out.println("Query forwarded to Buffer_out");
 
             } catch (ParserConfigurationException pce) {
                 pce.printStackTrace();
@@ -93,6 +95,7 @@ import org.w3c.dom.Element;
         public static void createResultFile(List result) {
 
             try {
+                String[] a = ForwardQuery.elements();
 
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -102,6 +105,10 @@ import org.w3c.dom.Element;
                 Element rootElement = doc.createElement("Responsefile");
                 doc.appendChild(rootElement);
 
+                rootElement.setAttribute("NodeID", a[1]);
+                rootElement.setAttribute("IPAddress", a[2]);
+                rootElement.setAttribute("PortAdrress", a[3]);
+                rootElement.setAttribute("Transport", a[4]);
 
                 for(int i=0; i<result.size(); i++)
                 {
@@ -119,22 +126,20 @@ import org.w3c.dom.Element;
                     resultel.appendChild(resultelement);
                 }
 
-
                 // write the content into xml file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
 
-                String a = ForwardQuery.elements();
-                String NodeID = SearchConstants.selfNodeID;
-                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Response-"+a+"-"+NodeID+".xml"));
+                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out" +
+                        "/Response"+"@" + a[0] + "@" + a[5] + "@" + SearchConstants.selfNodeID + ".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
 
                 transformer.transform(source, resultfile);
 
-                System.out.println("Response Forwarded!");
+                System.out.println("Response Forwarded");
 
             } catch (ParserConfigurationException pce) {
                 pce.printStackTrace();

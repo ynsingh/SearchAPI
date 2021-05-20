@@ -2,9 +2,15 @@ package com.SearchAPI;
 
 import java.lang.reflect.InvocationTargetException;
 
+
+
 public class ForwardQuery {
     public static String sequence = "";
-    public static String querystring = "";
+    public static String searchkey = "";
+    public static String ipaddress = "";
+    public static String nodeid = "";
+    public static String portaddress = "";
+    public static String transport = "";
 
 
     public static void forwardOwnQuery(LinkedList listname, String data1, String data2, String data3,
@@ -18,11 +24,11 @@ public class ForwardQuery {
         }
         else {  // Query is not duplicate and is to be added in Broadcast Query Table
 
-            sequence = data1;
-            querystring = data2;
             System.out.println("Own Query is Unique");
             LinkedList.insert(listname, data1, data2, data3, data4, data5, data6, data7, data8);
             LinkedList.saveList(LinkedList.list);
+            createFile.createQueryFile(data1, data2, data3, data4, data5, data6, data7, data8);
+            //Put Query-Seq file in output Buffer
 
         }
     }
@@ -41,40 +47,33 @@ public class ForwardQuery {
         else {  // Query is not duplicate and is to be added in Broadcast Query Table
 
             sequence = data1;
-            querystring = data2;
+            searchkey = data2;
+            nodeid = data3;
+            ipaddress = data4;
+            portaddress = data5;
+            transport = data6;
+
             System.out.println("Peer Query is Unique");
             LinkedList.insert(listname, data1, data2, data3, data4, data5, data6, data7, data8);
+
             LinkedList.saveList(LinkedList.list);
             //dosearch
-            SearchMethod.dosearch(data2);
+            SearchMethod.search(data2);
+
             if(data7>1) {// Query has TTL > 1 and is forwarded
                 createFile.createQueryFile(data1, data2, data3, data4, data5, data6, data7 - 1, data8);
+                //Put Query in Output Buffer
             }
             else System.out.println("TTL Expired");
         }
 
-        /*int i = LinkedList.searchinList(listname, data1);
-        if(i==-1)
-        {
-            // Query is not duplicate and is to be added in Broadcast Query Table
-            System.out.println("Query is Unique");
-            LinkedList.insert(listname, data1, data2, data3, data4, data5);
-            if(data5>1) {// Query has TTL > 0 and is forwarded
-                createFile.createQueryFile(data1, data2, data3, data4, data5 - 1, data6);
-            }
-
-        }
-        else {
-            System.out.println("Query is Duplicate");
-            //do nothing now
-        }*/
-
     }
 
-    public static String elements(){
-        String a = sequence;
+    public static String[] elements(){
+        String[] a = {sequence, nodeid, ipaddress, portaddress, transport, searchkey};
         return a;
     }
+
 
 
 }

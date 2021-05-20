@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 public class SearchMethod {
 
-    public static void dosearch(String keyword) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static void search(String keyword) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         LuceneTester c = new LuceneTester();
 
         // Using getDeclareMethod() method
@@ -20,7 +20,7 @@ public class SearchMethod {
         LuceneTester c = new LuceneTester();
 
         // Using getDeclareMethod() method
-        Method m = LuceneTester.class.getDeclaredMethod("query", String.class);
+        Method m = LuceneTester.class.getDeclaredMethod("querylocal", String.class);
         // Using setAccessible() method
         m.setAccessible(true);
         // Using invoke() method

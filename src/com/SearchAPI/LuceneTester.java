@@ -47,6 +47,21 @@ public class LuceneTester {
         }
     }
 
+    private void querylocal(String qry) {
+        LuceneTester tester;
+
+        try {
+            tester = new LuceneTester();
+            tester.createIndex();
+            tester.dolocalsearch(qry);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void createIndex() throws IOException {
         indexer = new Indexer(indexDir);

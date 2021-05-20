@@ -1,6 +1,7 @@
 package com.SearchAPI;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,20 +14,19 @@ public class QueryManager {
 
     public static void main(String[] args)throws Exception{
 
-        //Get own Node ID if change is there amend it
-
 
         //Loading Broadcast Query Table from saved File
         //LinkedList list = new LinkedList();
         LinkedList.loadList(LinkedList.list);
+        LinkedList.printList(LinkedList.list);
 
         //Broadcast Query Table Operations
         //ForwardQuery.forwardGlobalQuery(list,49, "Rajeshwar", 42, 44, 50, "03.12.11.36.26.206");
 
-
-
         //Print Broadcast Query Table
-        //LinkedList.printList(list);
+        //LinkedList.printList(LinkedList.list);
+        //LinkedList.saveList(LinkedList.list);
+
 
         //ask NodeID and put in createfile
 
@@ -58,20 +58,31 @@ public class QueryManager {
 
 
 
-        /*Buffer = Buffer.getInstance();
-
-        File file = new File("/Users/rex/Desktop/Query-Ramesh.xml");
-        //File file = new File("/Users/rex/Desktop/Response-211236-7e5a7fda92ad93469da9.xml");
+        Buffer = Buffer.getInstance();
+/*
+        //File file = new File("/Users/rex/Desktop/Query-a85.xml");
+        File file = new File("/Users/rex/Desktop/Response#10fc7f01-4d04-43ce-9f26-da30863af39c#7e5a7fda92ad93469da0.xml");
         Buffer.addFileToInputBuffer(file);
 
         Buffer.getFileFromInputBuffer();
 
-        //Compiled Result file added to output buffer at readfile comment or uncomment both
-        //csvFileReader.read(String.valueOf(routingManagerBuffer.getFileFromOutputBuffer()));
          */
 
+        //Compiled Result file added to output buffer at readfile comment or uncomment both
+        //csvFileReader.read(String.valueOf(routingManagerBuffer.getFileFromOutputBuffer()));
+
         //get self IDs
-        ReadNeighborTable.getselfID();
+        //ReadNeighborTable.getselfID();
+
+        //Local Query Search
+        //OwnQuery.query("Rana", true);
+
+
+        SearchThread threadObject = new SearchThread();
+        threadObject.start();
+
+        TestingThread testThreadObject = new TestingThread();
+        testThreadObject.start();
 
     }
 }

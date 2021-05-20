@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 
@@ -46,7 +47,8 @@ public class LinkedList {
     // **************INSERTION**************
 
     // Method to insert a new node in Broadcast Query Table
-    public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4, String data5, String data6, int data7, String data8) {
+    public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4,
+                                    String data5, String data6, int data7, String data8) {
         // Create a new node with given data
         //String data6 = TimeStamp.currentTime();
         Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
@@ -184,7 +186,6 @@ public class LinkedList {
         return list;
     }
 
-
     public static String readLineByLine(String filePath) {
         StringBuilder contentBuilder = new StringBuilder();
         try (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {
@@ -197,7 +198,8 @@ public class LinkedList {
 
 
     // Method to insert all nodes from saved file to Broadcast Query Table
-    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4, String data5, String data6, int data7, String data8) {
+    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4,
+                                       String data5, String data6, int data7, String data8) {
         // Create a new node with given data
         Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
         new_node.next = null;
@@ -223,48 +225,21 @@ public class LinkedList {
     }
 
     public static void loadList(LinkedList listname) {
-/*
-        try {
-            String filePath = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.txt";
-
-            String str = readLineByLine(filePath);
-            String[] arrSplit = str.split("\\s");
-            int i = 0;
-            while (i < arrSplit.length) {
-                //int d1 = Integer.parseInt(arrSplit[i]);
-                String d1 = arrSplit[i];
-                String d2 = arrSplit[i + 1];
-                String d3 = arrSplit[i + 2];
-                String d4 = arrSplit[i + 3];
-                // int d3 = Integer.parseInt(arrSplit[i + 2]);
-                //int d4 = Integer.parseInt(arrSplit[i + 3]);
-                int d5 = Integer.parseInt(arrSplit[i + 4]);
-                String d6 = arrSplit[i+5];
-               // listname = oldInsert(listname, d1, d2, d3, d4, d5, d6);
-                oldInsert(listname, d1, d2, d3, d4, d5, d6);
-                i = i + 6;
-            }
-        } catch (Exception e) {
-            System.out.println("error");
-        }
-
-*/
-
 
         String line = "";
-        String splitBy = ", ";
         try
         {
             //parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv"));
+            BufferedReader br = new BufferedReader(new FileReader(
+                    "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv"));
 
-            if((line = br.readLine()) == null){
+            //if((line = br.readLine()) == null){
 
-            }
+            //}
 
             while ((line = br.readLine()) != null)   //returns a Boolean value
             {
-                String[] arrSplit = line.split(splitBy);    // use comma as separator
+                String[] arrSplit = line.split(", ");    // use comma as separator
                 String d1 = arrSplit[0];
                 String d2 = arrSplit[1];
                 String d3 = arrSplit[2];
@@ -292,7 +267,8 @@ public class LinkedList {
             Node currNode = listname.head;
             while (currNode != null) {
                 texttosave.println(currNode.data1 + ", " + currNode.data2 + ", " + currNode.data3
-                       + ", " + currNode.data4 + ", " + currNode.data5 + ", " + currNode.data6);
+                       + ", " + currNode.data4 + ", " + currNode.data5 + ", " + currNode.data6 +
+                        ", " + currNode.data7 + ", " + currNode.data8);
                 //texttosave.println(currNode.data1 + ":" + currNode.data2 + ":" + currNode.data3
                 //                + ":" + currNode.data4 + ":" + currNode.data5 + ":" + currNode.data6);
                 currNode = currNode.next;
@@ -304,32 +280,25 @@ public class LinkedList {
     }
 
     //search any sequencenumber in list
-    public static int searchinList(LinkedList listname, String i) {
+    public static Boolean searchinList(LinkedList listname, String i) {
+        boolean sequencepresent = false;
         if (listname.head == null) {
-            return -1;
+            return sequencepresent;
         }
+        else {
+            //int index = 1;
+            Node temp = listname.head;
 
-        int index = 1;
-        Node temp = listname.head;
+            while (temp != null) {
 
-        // While loop is used to search the entire Linked
-        // List starting from the tail
-        while (temp != null) {
-
-            // Returns the index of that particular element,
-            // if found.
-            if (temp.data1.equals(i)) {
-                return index;
+                if (temp.data1.equals(i)) {
+                    sequencepresent = true;
+                    break;
+                }
+                temp = temp.next;
             }
-
-            // Gradually increases index while
-            // traversing through the Linked List
-            index++;
-            temp = temp.next;
+            return sequencepresent;
         }
-
-        // Returns -1 if the element is not found
-        return -1;
     }
 
     public static boolean checkDuplicateQuery(LinkedList listname, String i, String s) {
@@ -357,6 +326,74 @@ public class LinkedList {
             return duplicate;
         }
     }
+
+    public static String getQueryString(LinkedList listname, String i) {
+        String query = "";
+        if (listname.head == null) {
+            return query;
+        }
+        else {
+
+            Node temp = listname.head;
+
+            while (temp != null) {
+
+                if (temp.data1.equals(i)) {
+                    query = temp.data2;
+                    break;
+                }
+                temp = temp.next;
+            }
+            return query;
+        }
+    }
+
+    public static void deleteByTimestamps(LinkedList listname) {
+
+        if (listname.head == null) {
+
+        }
+        else {
+            try {
+                Node temp = listname.head;
+
+                while (temp != null) {
+
+                    String[] arr = temp.data8.split("\\.");
+                    int entry_month = Integer.valueOf(arr[0]);
+                    int entry_day = Integer.valueOf(arr[1]);
+                    int entry_hour = Integer.valueOf(arr[2]);
+                    int entry_minute = Integer.valueOf(arr[3]);
+
+
+                    String[] arr1 = TimeStamp.currentTime().split("\\.");
+                    int current_month = Integer.valueOf(arr1[0]);
+                    int current_day = Integer.valueOf(arr1[1]);
+                    int current_hour = Integer.valueOf(arr1[2]);
+                    int current_minute = Integer.valueOf(arr1[3]);
+
+
+                   if((entry_month != current_month) || (entry_day != current_day)) {
+                        LinkedList.deleteByKey(LinkedList.list, temp.data1);
+                        LinkedList.saveList(LinkedList.list);
+                    }
+                    else if((entry_hour != current_hour) && (entry_hour != current_hour-1)){
+                        LinkedList.deleteByKey(LinkedList.list, temp.data1);
+                        LinkedList.saveList(LinkedList.list);
+                    }
+
+                    temp = temp.next;
+                }
+            }
+         catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        }
+    }
+
+
+
+
 
 
 

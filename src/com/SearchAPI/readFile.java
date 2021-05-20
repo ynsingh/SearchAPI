@@ -1,6 +1,5 @@
 package com.SearchAPI;
 
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -10,23 +9,23 @@ import org.w3c.dom.Element;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 public class readFile {
 
-    public static String filename = "";
-    //public static ArrayList<Object> readIncomingFile(String fileaddress) {
-    public static void readIncomingFile(String fileaddress) {
 
+    public static void readIncomingFile(File xmlFile) {
 
         ArrayList<Object> readfile_elements = new ArrayList<>();
 
         try {
 
-           // File xmlFile = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in/"+fileaddress);
-            File xmlFile = new File(fileaddress);
-
-            filename = xmlFile.getName();
+            //String filename = xmlFile.getName();
+            //System.out.println(filename + " is being read");
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -34,12 +33,11 @@ public class readFile {
 
             doc.getDocumentElement().normalize();
 
-           // System.out.println("Message Type :" + doc.getDocumentElement().getNodeName());
-
             if(doc.getDocumentElement().getNodeName().equals("Queryfile") )
             {
+                System.out.println("Peer Query Recieved");
 
-            NodeList nList = doc.getElementsByTagName("query");
+                NodeList nList = doc.getElementsByTagName("query");
 
                 Node nNode = nList.item(0);
 
@@ -49,13 +47,6 @@ public class readFile {
                 {
 
                     Element eElement = (Element) nNode;
-
-                    /*System.out.println("Query Sequence Number: " + eElement.getAttribute("SequenceNumber"));
-                    System.out.println("Query String : " + eElement.getElementsByTagName("queryString").item(0).getTextContent());
-                    System.out.println("Source Node ID : " + eElement.getElementsByTagName("sourceNodeID").item(0).getTextContent());
-                    System.out.println("End Point Address : " + eElement.getElementsByTagName("endPointAddress").item(0).getTextContent());
-                    System.out.println("TTL : " + eElement.getElementsByTagName("TTL").item(0).getTextContent());
-                    System.out.println("Time Stamp : " + eElement.getElementsByTagName("timeStamp").item(0).getTextContent());*/
 
                     readfile_elements.add(eElement.getAttribute("SequenceNumber"));
                     readfile_elements.add(eElement.getElementsByTagName("queryString").item(0).getTextContent());
@@ -71,18 +62,19 @@ public class readFile {
                 //    System.out.println(readfile_elements.get(i));
                 //}
 
-                ForwardQuery.forwardPeerQuery(LinkedList.list, String.valueOf(readfile_elements.get(0)),String.valueOf(readfile_elements.get(1)),
-                        String.valueOf(readfile_elements.get(2)),String.valueOf(readfile_elements.get(3)),
-                        String.valueOf(readfile_elements.get(4)),String.valueOf(readfile_elements.get(5)),
-                        Integer.parseInt(String.valueOf(readfile_elements.get(6))),String.valueOf(readfile_elements.get(7)));
-
-
-
+                ForwardQuery.forwardPeerQuery(LinkedList.list, String.valueOf(readfile_elements.get(0)),
+                        String.valueOf(readfile_elements.get(1)), String.valueOf(readfile_elements.get(2)),
+                        String.valueOf(readfile_elements.get(3)), String.valueOf(readfile_elements.get(4)),
+                        String.valueOf(readfile_elements.get(5)),
+                        Integer.parseInt(String.valueOf(readfile_elements.get(6))),
+                        String.valueOf(readfile_elements.get(7)));
 
             }//for query
 
             else if(doc.getDocumentElement().getNodeName().equals("Responsefile") ) {
                 NodeList nList = doc.getElementsByTagName("result");
+
+                System.out.println("Peer Response Received");
 
                 for (int temp = 0; temp < nList.getLength(); temp++) {
 
@@ -93,15 +85,15 @@ public class readFile {
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element eElement = (Element) nNode;
 
-                       // readfile_elements.add(eElement.getAttribute("Serial_No-"));
-                         readfile_elements.add(eElement.getElementsByTagName("file_address").item(0).getTextContent());
-                       // System.out.println(eElement.getElementsByTagName("file_address").item(0).getTextContent());
+                        // readfile_elements.add(eElement.getAttribute("Serial_No-"));
+                        readfile_elements.add(eElement.getElementsByTagName("file_address").item(0).getTextContent());
+                        // System.out.println(eElement.getElementsByTagName("file_address").item(0).getTextContent());
                     }
                 }
-                compileResults(readfile_elements);
+                compileResults(xmlFile.getName(), readfile_elements);
             }
 
-             // xmlFile.delete();
+           // xmlFile.delete();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,39 +103,45 @@ public class readFile {
     }
 
 
-    private static void compileResults(ArrayList<Object> file_elements) {
+    private static void compileResults(String filename, ArrayList<Object> file_elements) {
 
-
-        String[] arr = filename.split("-");
+        String[] arr = filename.split("@");
         String sequence = arr[1];
-        String NodeID = arr[2];
+        String searchkey = arr[2];
 
             try {
-                File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/"+sequence+".csv");
 
-                if(!file.exists()){
-                    file.createNewFile();
+                //check if sequence is in LinkedList
+                if (LinkedList.searchinList(LinkedList.list, sequence)) {
+
+                    File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/" + sequence + ".csv");
+
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+
+                    FileWriter fw = new FileWriter(file, true);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    PrintWriter texttosave = new PrintWriter(bw);
+                    //PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+
+                    //texttosave.print( file_elements.get(0) );
+                    for (int i = 0; i < file_elements.size(); i++) {
+                        texttosave.print(file_elements.get(i) + ", ");
+                    }
+                    texttosave.close();
+
+                    Path source = Paths.get("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/" + sequence + ".csv");
+                    Path destination = Paths.get("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/Cache/" + searchkey + ".csv");
+                    Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+
+                    //QueryManager.Buffer.addFileToOutputBuffer(file);
+                   }
+                else System.out.println("Response received for an expired query");
+
+                } catch(Exception e){
+                    System.out.println("error");
                 }
-
-                FileWriter fw = new FileWriter(file,true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter texttosave = new PrintWriter(bw);
-                //PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
-
-                //texttosave.print( file_elements.get(0) );
-                for (int i = 0; i < file_elements.size();i++) {
-                    texttosave.print( file_elements.get(i) +", ");
-                }
-                texttosave.close();
-
-                //QueryManager.Buffer.addFileToOutputBuffer(file);
-
-            } catch (Exception e) {
-                System.out.println("error");
-            }
-
     }
 
 }
-
-

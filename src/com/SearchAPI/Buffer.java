@@ -54,6 +54,7 @@ public class Buffer {
         inputBufferLock.lock();
         inputBuffer.add(file);
         file.deleteOnExit();
+        //file.delete();
         // log.debug("File added to Input buffer");
         inputBufferLock.unlock();
         return true;
@@ -70,6 +71,7 @@ public class Buffer {
         try {
             file = inputBuffer.get(0);
             inputBuffer.remove(0);
+
         } catch (Exception e) {
             //  log.debug("There is no File in Input Buffer");
         }
@@ -137,10 +139,14 @@ public class Buffer {
     public void getFileFromInputBuffer() {
         File file = Buffer.fetchFromInputBuffer();
         if (!(file == null)) {
-
-            readFile.readIncomingFile(String.valueOf(file));
-
+            System.out.println(file);
+            readFile.readIncomingFile(file);
         }
+    }
+
+    int sizeofInputBuffer() {
+            int s = inputBuffer.size();
+            return s;
     }
 
     public File getFileFromOutputBuffer() {

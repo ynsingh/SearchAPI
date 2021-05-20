@@ -136,7 +136,7 @@ class RoutingManagerBuffer {
                 File file = routingManagerBuffer.fetchFromInputBuffer();
                 if (!(file == null)) {
 
-                    readFile.readIncomingFile(String.valueOf(file));
+                   // readFile.readIncomingFile(String.valueOf(file));
 
                 }
     }
