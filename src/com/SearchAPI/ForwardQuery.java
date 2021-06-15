@@ -1,5 +1,6 @@
 package com.SearchAPI;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 
@@ -15,7 +16,7 @@ public class ForwardQuery {
 
     public static void forwardOwnQuery(LinkedList listname, String data1, String data2, String data3,
                                         String data4, String data5, String data6, int data7, String data8)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
 
         if(LinkedList.checkDuplicateQuery(listname, data1, data2))
         {
@@ -29,7 +30,8 @@ public class ForwardQuery {
             LinkedList.saveList(LinkedList.list);
             createFile.createQueryFile(data1, data2, data3, data4, data5, data6, data7, data8);
             //Put Query-Seq file in output Buffer
-
+            SearchMethod.findInCache(data2, data1, true);
+            //find in cache till global response arrives
         }
     }
 
@@ -37,7 +39,7 @@ public class ForwardQuery {
 
     public static void forwardPeerQuery(LinkedList listname, String data1, String data2, String data3,
                                         String data4, String data5, String data6, int data7, String data8)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
 
         if(LinkedList.checkDuplicateQuery(listname, data1, data2))
         {
@@ -59,6 +61,8 @@ public class ForwardQuery {
             LinkedList.saveList(LinkedList.list);
             //dosearch
             SearchMethod.search(data2);
+            //forward response from cache
+            SearchMethod.findInCache(data2, data1, false);
 
             if(data7>1) {// Query has TTL > 1 and is forwarded
                 createFile.createQueryFile(data1, data2, data3, data4, data5, data6, data7 - 1, data8);
@@ -74,12 +78,4 @@ public class ForwardQuery {
         return a;
     }
 
-
-
 }
-        /* Search for a particular query in Broadcast Query Table
-       int n = LinkedList.searchinList(list, 3);
-        if(n==-1)
-            System.out.println("Searched Key not Present in Data");
-        else
-            LinkedList.printKey(list, n);*/

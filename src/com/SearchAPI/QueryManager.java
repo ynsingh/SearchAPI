@@ -12,7 +12,8 @@ public class QueryManager {
     //public static RoutingManagerBuffer routingManagerBuffer;
     public static Buffer Buffer;
 
-    public static void main(String[] args)throws Exception{
+
+   public static void main(String[] args)throws Exception{
 
 
         //Loading Broadcast Query Table from saved File
@@ -58,6 +59,9 @@ public class QueryManager {
 
 
 
+
+
+
         Buffer = Buffer.getInstance();
 /*
         //File file = new File("/Users/rex/Desktop/Query-a85.xml");
@@ -75,7 +79,7 @@ public class QueryManager {
         //ReadNeighborTable.getselfID();
 
         //Local Query Search
-        //OwnQuery.query("Rana", true);
+        //OwnQuery.query("Ramesh", true);
 
 
         SearchThread threadObject = new SearchThread();
@@ -84,6 +88,9 @@ public class QueryManager {
         TestingThread testThreadObject = new TestingThread();
         testThreadObject.start();
 
+         //SearchMethod.findInCache("Rana.csv", "AA", false);
     }
+
+
 }
 

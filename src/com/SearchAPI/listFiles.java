@@ -12,7 +12,7 @@ public class listFiles {
        ArrayList<Object> xmlfiles = new ArrayList<>();
 
        try {
-           File f = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in");
+           File f = new File(SearchConstants.InputBuffer);
 
            FilenameFilter filter = new FilenameFilter() {
                @Override

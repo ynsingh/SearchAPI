@@ -1,8 +1,14 @@
 package com.SearchAPI;
 
-
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchMethod {
 
@@ -25,6 +31,64 @@ public class SearchMethod {
         m.setAccessible(true);
         // Using invoke() method
         m.invoke(c, keyword);
+    }
+
+    public static void findInCache(String keyword, String sequence, boolean ownnodequery) throws IOException {
+
+        File directoryPath = new File(SearchConstants.CacheDirectory);
+        FilenameFilter textFilefilter = new FilenameFilter(){
+            public boolean accept(File dir, String name) {
+                String lowercaseName = name.toLowerCase();
+                if (lowercaseName.endsWith(".csv")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+
+        String filesList[] = directoryPath.list(textFilefilter);
+
+        for(int i = 0; i < filesList.length; i++){
+
+            String[] arr = filesList[i].split("@");
+            String cachekey = arr[0];
+
+            if(cachekey.equals(keyword)){
+
+                if(ownnodequery) {
+                    Path source = Paths.get(SearchConstants.CacheDirectory + filesList[i]);
+                    Path destination = Paths.get(SearchConstants.OutputBuffer + filesList[i] + ".csv");
+                    Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println(filesList[i]);
+                    System.out.println("Own Query, found in Cache. CSV sent to Buffer");
+                }
+                else{
+
+                    List<String> cachelist = new ArrayList<String>();
+
+                    String line = "";
+                    try
+                    {
+                        //parsing a CSV file into BufferedReader class constructor
+                        BufferedReader br = new BufferedReader(new FileReader(
+                                SearchConstants.CacheDirectory + filesList[i]));
+
+                        while ((line = br.readLine()) != null)   //returns a Boolean value
+                        {
+                            cachelist.add(line);
+                        }
+                        createFile.createResultFile(cachelist);
+                        System.out.println("Peer Query, found in Cache. XML sent to Buffer");
+                    }
+                    catch (IOException e)
+                    {
+                        System.out.println("error");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -90,7 +90,8 @@ public class readFile {
                         // System.out.println(eElement.getElementsByTagName("file_address").item(0).getTextContent());
                     }
                 }
-                compileResults(xmlFile.getName(), readfile_elements);
+
+                handleResults(xmlFile.getName(), readfile_elements);
             }
 
            // xmlFile.delete();
@@ -98,9 +99,50 @@ public class readFile {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //return readfile_elements;
     }
+
+
+    private static void handleResults(String filename, ArrayList<Object> file_elements) {
+
+        String[] arr = filename.split("@");
+        String sequence = arr[1];
+        String searchkey = arr[2];
+        String peersource = arr[3];
+
+        try {
+
+            //check if sequence is in LinkedList
+            if (LinkedList.searchinList(LinkedList.list, sequence)) {
+
+                File file = new File(SearchConstants.OutputBuffer + searchkey + "@" + peersource + ".csv");
+
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+
+                FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter texttosave = new PrintWriter(bw);
+
+                for (int i = 0; i < file_elements.size(); i++) {
+                    texttosave.print(file_elements.get(i) + ", ");
+                }
+                texttosave.close();
+
+                Path source = Paths.get(SearchConstants.OutputBuffer + searchkey + "@" + peersource + ".csv");
+                Path destination = Paths.get(SearchConstants.CacheDirectory + searchkey + "@" + peersource + ".csv");
+                Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+
+                System.out.println("Response Saved to Cache");
+            }
+            else System.out.println("Response received for an expired query");
+
+        } catch(Exception e){
+            System.out.println("error");
+        }
+    }
+
+
 
 
     private static void compileResults(String filename, ArrayList<Object> file_elements) {
@@ -108,13 +150,14 @@ public class readFile {
         String[] arr = filename.split("@");
         String sequence = arr[1];
         String searchkey = arr[2];
+        String peersource = arr[3];
 
             try {
 
                 //check if sequence is in LinkedList
                 if (LinkedList.searchinList(LinkedList.list, sequence)) {
 
-                    File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/" + sequence + ".csv");
+                    File file = new File(SearchConstants.OutputBuffer + searchkey + "@" + sequence + ".csv");
 
                     if (!file.exists()) {
                         file.createNewFile();
@@ -126,13 +169,15 @@ public class readFile {
                     //PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
 
                     //texttosave.print( file_elements.get(0) );
+
+                    texttosave.print("Src"+peersource);
                     for (int i = 0; i < file_elements.size(); i++) {
                         texttosave.print(file_elements.get(i) + ", ");
                     }
                     texttosave.close();
 
-                    Path source = Paths.get("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/" + sequence + ".csv");
-                    Path destination = Paths.get("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/Cache/" + searchkey + ".csv");
+                    Path source = Paths.get(SearchConstants.OutputBuffer + searchkey + "@" + sequence + ".csv");
+                    Path destination = Paths.get(SearchConstants.CacheDirectory + searchkey + "@" + sequence + ".csv");
                     Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 
                     //QueryManager.Buffer.addFileToOutputBuffer(file);

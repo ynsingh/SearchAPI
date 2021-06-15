@@ -23,8 +23,8 @@ public class ReadNeighborTable {
             DocumentBuilder documentBuilder;
             try {
                 documentBuilder = builderFactory.newDocumentBuilder();
-                //Document doc = documentBuilder.parse(new File(fileName.getName()));
-                Document doc = documentBuilder.parse("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/neighbor_table.xml");
+                //Document doc = documentBuilder.parse("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/neighbor_table.xml");
+                Document doc = documentBuilder.parse(SearchConstants.NeighborTable);
                 doc.getDocumentElement().normalize();
 
                 SearchConstants.selfNodeID = doc.getDocumentElement().getAttribute("SELF_NODE_ID");

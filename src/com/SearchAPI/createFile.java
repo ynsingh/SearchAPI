@@ -76,7 +76,7 @@ import org.w3c.dom.Element;
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/Query-"+d1+".xml"));
+                StreamResult result = new StreamResult(new File(SearchConstants.OutputBuffer+"Query-"+d1+".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
@@ -107,7 +107,7 @@ import org.w3c.dom.Element;
 
                 rootElement.setAttribute("NodeID", a[1]);
                 rootElement.setAttribute("IPAddress", a[2]);
-                rootElement.setAttribute("PortAdrress", a[3]);
+                rootElement.setAttribute("PortAddress", a[3]);
                 rootElement.setAttribute("Transport", a[4]);
 
                 for(int i=0; i<result.size(); i++)
@@ -131,8 +131,8 @@ import org.w3c.dom.Element;
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
 
-                StreamResult resultfile = new StreamResult(new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out" +
-                        "/Response"+"@" + a[0] + "@" + a[5] + "@" + SearchConstants.selfNodeID + ".xml"));
+                StreamResult resultfile = new StreamResult(new File(SearchConstants.OutputBuffer +
+                        "Response"+"@" + a[0] + "@" + a[5] + "@" + SearchConstants.selfNodeID + ".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
