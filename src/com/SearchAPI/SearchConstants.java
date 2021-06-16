@@ -12,5 +12,6 @@ public class SearchConstants {
     public static String InputBuffer = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in/";
     public static String OutputBuffer = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_out/";
     public static String NeighborTable = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/neighbor_table.xml";
+    public static String BroadcastQueryList = "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv";
 
 }

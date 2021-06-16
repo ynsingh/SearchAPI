@@ -28,10 +28,11 @@ public class LinkedList {
         String data6;
         int data7;
         String data8;
+        String data9;
         Node next;
 
         // Constructor
-        Node(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8) {
+        Node(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8, String d9) {
             data1 = d1;
             data2 = d2;
             data3 = d3;
@@ -40,6 +41,7 @@ public class LinkedList {
             data6 = d6;
             data7 = d7;
             data8 = d8;
+            data9 = d9;
             next = null;
         }
     }
@@ -48,10 +50,10 @@ public class LinkedList {
 
     // Method to insert a new node in Broadcast Query Table
     public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4,
-                                    String data5, String data6, int data7, String data8) {
+                                    String data5, String data6, int data7, String data8, String data9) {
         // Create a new node with given data
         //String data6 = TimeStamp.currentTime();
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8, data9);
         new_node.next = null;
 
         // If the Linked List is empty,
@@ -96,6 +98,7 @@ public class LinkedList {
             System.out.print(currNode.data6 + " ");
             System.out.print(currNode.data7 + " ");
             System.out.print(currNode.data8 + " ");
+            System.out.print(currNode.data9 + " ");
 
             System.out.println("\n");
 
@@ -123,6 +126,7 @@ public class LinkedList {
                 System.out.print(currNode.data6 + " ");
                 System.out.print(currNode.data7 + " ");
                 System.out.print(currNode.data8 + " ");
+                System.out.print(currNode.data9 + " ");
             }
             currNode = currNode.next;
         }
@@ -199,9 +203,9 @@ public class LinkedList {
 
     // Method to insert all nodes from saved file to Broadcast Query Table
     public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4,
-                                       String data5, String data6, int data7, String data8) {
+                                       String data5, String data6, int data7, String data8, String data9) {
         // Create a new node with given data
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8, data9);
         new_node.next = null;
 
         // If the Linked List is empty,
@@ -230,12 +234,7 @@ public class LinkedList {
         try
         {
             //parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader(
-                    "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv"));
-
-            //if((line = br.readLine()) == null){
-
-            //}
+            BufferedReader br = new BufferedReader(new FileReader(SearchConstants.BroadcastQueryList));
 
             while ((line = br.readLine()) != null)   //returns a Boolean value
             {
@@ -248,7 +247,8 @@ public class LinkedList {
                 String d6 = arrSplit[5];
                 int d7 = Integer.parseInt(arrSplit[6]);
                 String d8 = arrSplit[7];
-                oldInsert(listname, d1, d2, d3, d4, d5, d6, d7, d8);
+                String d9 = arrSplit[8];
+                oldInsert(listname, d1, d2, d3, d4, d5, d6, d7, d8, d9);
             }
         }
         catch (IOException e)
@@ -268,7 +268,7 @@ public class LinkedList {
             while (currNode != null) {
                 texttosave.println(currNode.data1 + ", " + currNode.data2 + ", " + currNode.data3
                        + ", " + currNode.data4 + ", " + currNode.data5 + ", " + currNode.data6 +
-                        ", " + currNode.data7 + ", " + currNode.data8);
+                        ", " + currNode.data7 + ", " + currNode.data8 + ", " + currNode.data9);
                 //texttosave.println(currNode.data1 + ":" + currNode.data2 + ":" + currNode.data3
                 //                + ":" + currNode.data4 + ":" + currNode.data5 + ":" + currNode.data6);
                 currNode = currNode.next;

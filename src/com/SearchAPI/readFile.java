@@ -56,6 +56,7 @@ public class readFile {
                     readfile_elements.add(eElement.getElementsByTagName("transport").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("TTL").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("timeStamp").item(0).getTextContent());
+                    readfile_elements.add(eElement.getElementsByTagName("NeighborNodeID").item(0).getTextContent());
 
                 }
                 //for (int i = 0; i < readfile_elements.size();i++) {
@@ -67,7 +68,7 @@ public class readFile {
                         String.valueOf(readfile_elements.get(3)), String.valueOf(readfile_elements.get(4)),
                         String.valueOf(readfile_elements.get(5)),
                         Integer.parseInt(String.valueOf(readfile_elements.get(6))),
-                        String.valueOf(readfile_elements.get(7)));
+                        String.valueOf(readfile_elements.get(7)), String.valueOf(readfile_elements.get(8)));
 
             }//for query
 

@@ -1,7 +1,10 @@
 package com.SearchAPI;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class SearchThread extends Thread{
     public void run()
@@ -9,8 +12,9 @@ public class SearchThread extends Thread{
         int i =0;
         while(true) {
             try {
-                for (int t = 0; t < QueryManager.Buffer.sizeofInputBuffer(); t++) {
-                    QueryManager.Buffer.getFileFromInputBuffer();
+                for (int t = 0; t < Main.Buffer.sizeofInputBuffer(); t++) {
+                    Main.Buffer.getFileFromInputBuffer();
+
                 }
 
                 //delete older queries

@@ -7,7 +7,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import java.util.*;
 
-import static com.SearchAPI.createFile.createResultFile;
+//import static com.SearchAPI.createFile.createResultFile;
 
 
 public class LuceneTester {
@@ -114,7 +114,8 @@ public class LuceneTester {
         else{
             //for(String indlresult:result)
             //    System.out.println(indlresult);
-            createResultFile(result);
+            //createResultFile(result);
+            QueryManager.createResultFile(result);
         }
 
 
@@ -143,7 +144,7 @@ public class LuceneTester {
         else{
             //for(String indlresult:result)
             //    System.out.println(indlresult);
-            OwnQuery.passLocalResponse(result);
+            OwnQuery.passLocalResponse(result, searchQuery);
         }
 
 

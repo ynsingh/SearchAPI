@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 
     public class createFile {
 
-        public static void createQueryFile(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8 ) {
+        public static void createQueryFile(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8, String d9 ) {
 
             try {
 
@@ -72,6 +72,10 @@ import org.w3c.dom.Element;
                 timeStamp.appendChild(doc.createTextNode(d8));
                 query.appendChild(timeStamp);
 
+                Element NeighborNodeID = doc.createElement("NeighborNodeID");
+                NeighborNodeID.appendChild(doc.createTextNode(d9));
+                query.appendChild(NeighborNodeID);
+
                 // write the content into xml file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
@@ -109,6 +113,7 @@ import org.w3c.dom.Element;
                 rootElement.setAttribute("IPAddress", a[2]);
                 rootElement.setAttribute("PortAddress", a[3]);
                 rootElement.setAttribute("Transport", a[4]);
+                rootElement.setAttribute("NeighborNodeID", a[6]);
 
                 for(int i=0; i<result.size(); i++)
                 {
@@ -132,7 +137,7 @@ import org.w3c.dom.Element;
                 DOMSource source = new DOMSource(doc);
 
                 StreamResult resultfile = new StreamResult(new File(SearchConstants.OutputBuffer +
-                        "Response"+"@" + a[0] + "@" + a[5] + "@" + SearchConstants.selfNodeID + ".xml"));
+                        "Response"+"@" + a[0] + "@" + a[5] + "@" + SearchConstants.selfNodeID + "@" + ".xml"));
 
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);

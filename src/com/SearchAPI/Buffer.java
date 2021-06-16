@@ -53,7 +53,7 @@ public class Buffer {
     boolean addToInputBuffer(File file) {
         inputBufferLock.lock();
         inputBuffer.add(file);
-        file.deleteOnExit();
+        //file.deleteOnExit();
         //file.delete();
         // log.debug("File added to Input buffer");
         inputBufferLock.unlock();
@@ -139,10 +139,13 @@ public class Buffer {
     public void getFileFromInputBuffer() {
         File file = Buffer.fetchFromInputBuffer();
         if (!(file == null)) {
-            System.out.println(file);
-            readFile.readIncomingFile(file);
+            //System.out.println(file);
+            //readFile.readIncomingFile(file);
+            QueryManager.readIncomingFile(file);
         }
     }
+
+
 
     int sizeofInputBuffer() {
             int s = inputBuffer.size();

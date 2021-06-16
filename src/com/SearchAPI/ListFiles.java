@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 
-public class listFiles {
+public class ListFiles {
 
    public static void listallFiles() {
 
@@ -42,7 +42,7 @@ public class listFiles {
                }
                else{
 
-               }*/
+               } */
 
                
               // ArrayList<Object> readfile_elements =  readFile.readIncomingFile(String.valueOf(files[i]));
@@ -59,3 +59,4 @@ public class listFiles {
     }
 
 }
+

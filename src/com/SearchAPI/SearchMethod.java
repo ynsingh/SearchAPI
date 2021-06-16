@@ -57,17 +57,18 @@ public class SearchMethod {
             if(cachekey.equals(keyword)){
 
                 if(ownnodequery) {
-                    Path source = Paths.get(SearchConstants.CacheDirectory + filesList[i]);
-                    Path destination = Paths.get(SearchConstants.OutputBuffer + filesList[i] + ".csv");
+                    Path source = Paths.get(SearchConstants.CacheDirectory + filesList[i] );
+                    Path destination = Paths.get(SearchConstants.OutputBuffer + filesList[i]);
                     Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-                    System.out.println(filesList[i]);
-                    System.out.println("Own Query, found in Cache. CSV sent to Buffer");
+                   // System.out.println(filesList[i]);
+                    System.out.println("Response from Cache sent to Own Node");
                 }
                 else{
 
                     List<String> cachelist = new ArrayList<String>();
 
                     String line = "";
+                    String splitBy = ", ";
                     try
                     {
                         //parsing a CSV file into BufferedReader class constructor
@@ -76,10 +77,15 @@ public class SearchMethod {
 
                         while ((line = br.readLine()) != null)   //returns a Boolean value
                         {
-                            cachelist.add(line);
+                            String[] a = line.split(splitBy);
+                            for(int j = 0; j<a.length; j++){
+                                cachelist.add(a[j]);
+                            }
+                            //cachelist.add(line);
                         }
-                        createFile.createResultFile(cachelist);
-                        System.out.println("Peer Query, found in Cache. XML sent to Buffer");
+                        QueryManager.createResultFile(cachelist);
+                       // createFile.createResultFile(cachelist);
+                        System.out.println("Response from Cache sent to Peer Node");
                     }
                     catch (IOException e)
                     {
