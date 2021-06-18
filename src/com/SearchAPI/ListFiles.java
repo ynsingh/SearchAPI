@@ -29,33 +29,10 @@ public class ListFiles {
            for (int i = 0; i < files.length; i++) {
                System.out.println(files[i].getName());
 
-
-               /*String Str = String.valueOf(files[i].getName());
-               String[] arrSplit = Str.split("-");
-
-               if(arrSplit[0].equals("Query")){
-                   ArrayList<Object> readfile_elements =  readFile.readIncomingFile(String.valueOf(files[i]));
-                   for (Object readfile_element : readfile_elements) {
-                       System.out.println(readfile_element);
-                   }
-                   System.out.println("---------------------------");
-               }
-               else{
-
-               } */
-
-               
-              // ArrayList<Object> readfile_elements =  readFile.readIncomingFile(String.valueOf(files[i]));
-               //for (Object readfile_element : readfile_elements) {
-               //    System.out.println(readfile_element);
-               //}
-               //System.out.println("---------------------------");
            }
        } catch (Exception e) {
            System.err.println(e.getMessage());
        }
-
-
     }
 
 }

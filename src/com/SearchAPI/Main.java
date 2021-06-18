@@ -1,16 +1,12 @@
 package com.SearchAPI;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 public class Main {
 
 
     //public static RoutingManagerBuffer routingManagerBuffer;
-    public static Buffer Buffer;    //   reqd
+    // public static Buffer Buffer;    //   reqd
 
 
    public static void main(String[] args)throws Exception{
@@ -20,8 +16,8 @@ public class Main {
         //LinkedList list = new LinkedList();
 
 
-        LinkedList.loadList(LinkedList.list);    // reqd
-        LinkedList.printList(LinkedList.list);   //  reqd
+        //LinkedList.loadList(LinkedList.list);    // reqd
+        //LinkedList.printList(LinkedList.list);   //  reqd
 
         //Broadcast Query Table Operations
         //ForwardQuery.forwardGlobalQuery(list,49, "Rajeshwar", 42, 44, 50, "03.12.11.36.26.206");
@@ -60,12 +56,10 @@ public class Main {
         // Read all file at Buffer_in Folder
 
 
+        //Buffer = Buffer.getInstance();    //  reqd
 
 
-
-
-        Buffer = Buffer.getInstance();    //  reqd
-/*
+       /*
         //File file = new File("/Users/rex/Desktop/Query-a85.xml");
         File file = new File("/Users/rex/Desktop/Response#10fc7f01-4d04-43ce-9f26-da30863af39c#7e5a7fda92ad93469da0.xml");
         Buffer.addFileToInputBuffer(file);
@@ -81,20 +75,31 @@ public class Main {
         //ReadNeighborTable.getselfID();
 
         //Local Query Search
-        //OwnQuery.query("Jeena", true);
+        //QueryManager.query("Jeena", true);
 
 
-        SearchThread threadObject = new SearchThread();
-        threadObject.start();
+
+
+       QueryManager.Load();
+       QueryManager.getselfID();
+       //QueryManager q = new QueryManager(); q.query("Ajay", false);
+
+
+
 
         //TestingThread testThreadObject = new TestingThread();
         //testThreadObject.start();
 
-        //demothread demothreadObject = new demothread();
-        //demothreadObject.start();
+        //DemoThread DemoThreadObject = new DemoThread();
+        //DemoThreadObject.start();
 
-       File g = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in/Query-9x19d515-7e54-490b-9401-b6a2925a7b9f.xml");
-       Main.Buffer.addFileToInputBuffer(g);
+      //File a = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in/Response@5be459a6-7c54-4269-a784-3cc6321b1184@Jeena@7e5a7fda92ad53469da4@.xml");
+      //QueryManager.Buffer.addFileToInputBuffer(a);
+      // File b = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/buffer_in/Response@9x19d515-7e54-490b-9401-b6a2925a7b9f@Nina@7e5a7fda90ad53469da4@.xml");
+      // QueryManager.Buffer.addFileToInputBuffer(b);
+       //Main.Buffer.addFileToInputBuffer(g);
+
+
 
 
 

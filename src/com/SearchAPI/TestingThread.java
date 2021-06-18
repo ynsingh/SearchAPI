@@ -21,8 +21,10 @@ public class TestingThread extends Thread{
                 files = f.listFiles(filter);
                 for (int i = 0; i < files.length; i++) {
                     //System.out.println("File Received in Buffer -"+files[i].getName());
-                    Main.Buffer.addFileToInputBuffer(files[i]);
-                   // files[i].delete();
+
+                   // Main.Buffer.addFileToInputBuffer(files[i]);   //reqd
+
+                    // files[i].delete();
                 }
                 Thread.sleep(5000);
 

@@ -1,7 +1,6 @@
 package com.SearchAPI;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -12,14 +11,12 @@ public class Buffer {
  * This class is used to create object of RoutingManagerBuffer.
  * There are inputRoutingBuffer and outputRoutingBuffer.
  */
-//class RoutingManagerBuffer {
 
     private static final List<File> inputBuffer = new LinkedList<>();
     private static final List<File> outputBuffer = new LinkedList<>();
     private static final ReentrantLock inputBufferLock = new ReentrantLock();
     private static final ReentrantLock outputBufferLock = new ReentrantLock();
     private static Buffer Buffer;
-    //   private static final Logger log = Logger.getLogger(RoutingManagerBuffer.class);
 
     /**
      * This is the default constructor of the class.
@@ -55,7 +52,6 @@ public class Buffer {
         inputBuffer.add(file);
         //file.deleteOnExit();
         //file.delete();
-        // log.debug("File added to Input buffer");
         inputBufferLock.unlock();
         return true;
     }
@@ -73,7 +69,6 @@ public class Buffer {
             inputBuffer.remove(0);
 
         } catch (Exception e) {
-            //  log.debug("There is no File in Input Buffer");
         }
         inputBufferLock.unlock();
         return file;
@@ -86,7 +81,6 @@ public class Buffer {
     boolean addToOutputBuffer(File file) {
         outputBufferLock.lock();
         outputBuffer.add(file);
-        // log.debug("File added to Output buffer");
         file.deleteOnExit();
         outputBufferLock.unlock();
         return true;
@@ -104,13 +98,10 @@ public class Buffer {
             file = outputBuffer.get(0);
             outputBuffer.remove(0);
         } catch (Exception e) {
-            //  log.debug("There is no File in Output Buffer");
         }
         outputBufferLock.unlock();
         return file;
     }
-
-    ////////////////////////////
 
 
     /**
@@ -141,19 +132,16 @@ public class Buffer {
         if (!(file == null)) {
             //System.out.println(file);
             //readFile.readIncomingFile(file);
-            QueryManager.readIncomingFile(file);
+            QueryManager q = new QueryManager();
+            q.readIncomingFile(file);
         }
     }
-
-
 
     int sizeofInputBuffer() {
             int s = inputBuffer.size();
             return s;
     }
-
     public File getFileFromOutputBuffer() {
         return Buffer.fetchFromOutputBuffer();
     }
-
 }

@@ -1,8 +1,6 @@
 package com.SearchAPI;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,83 +10,88 @@ import java.util.List;
 
 public class SearchMethod {
 
-    public static void search(String keyword) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        LuceneTester c = new LuceneTester();
+    public void passLocalResponse(List<String> result, String searchkey){
 
-        // Using getDeclareMethod() method
-        Method m = LuceneTester.class.getDeclaredMethod("query", String.class);
-        // Using setAccessible() method
-        m.setAccessible(true);
-        // Using invoke() method
-        m.invoke(c, keyword);
+        File file = new File(SearchConstants.OutputBuffer + searchkey + ".csv");
+
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(file, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter texttosave = new PrintWriter(bw);
+
+        for (String s : result) {
+            texttosave.print(s + ", ");
+        }
+        texttosave.close();
+
+        System.out.println("Response Saved to Cache");
     }
-    public static void dolocalsearch(String keyword) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        LuceneTester c = new LuceneTester();
 
-        // Using getDeclareMethod() method
-        Method m = LuceneTester.class.getDeclaredMethod("querylocal", String.class);
-        // Using setAccessible() method
-        m.setAccessible(true);
-        // Using invoke() method
-        m.invoke(c, keyword);
-    }
 
-    public static void findInCache(String keyword, String sequence, boolean ownnodequery) throws IOException {
+
+    public void findInCache(String sequence, String keyword, String nodeid, String ipaddress,
+                            String portaddress, String transport, String neighbornode, boolean ownnodequery) throws IOException {
 
         File directoryPath = new File(SearchConstants.CacheDirectory);
         FilenameFilter textFilefilter = new FilenameFilter(){
             public boolean accept(File dir, String name) {
                 String lowercaseName = name.toLowerCase();
-                if (lowercaseName.endsWith(".csv")) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return lowercaseName.endsWith(".csv");
             }
         };
 
-        String filesList[] = directoryPath.list(textFilefilter);
+        String[] filesList = directoryPath.list(textFilefilter);
 
-        for(int i = 0; i < filesList.length; i++){
+        for (String s : filesList) {
 
-            String[] arr = filesList[i].split("@");
+            String[] arr = s.split("@");
             String cachekey = arr[0];
 
-            if(cachekey.equals(keyword)){
+            if (cachekey.equals(keyword)) {
 
-                if(ownnodequery) {
-                    Path source = Paths.get(SearchConstants.CacheDirectory + filesList[i] );
-                    Path destination = Paths.get(SearchConstants.OutputBuffer + filesList[i]);
+                if (ownnodequery) {
+                    Path source = Paths.get(SearchConstants.CacheDirectory + s);
+                    Path destination = Paths.get(SearchConstants.OutputBuffer + s);
                     Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-                   // System.out.println(filesList[i]);
+                    // System.out.println(filesList[i]);
                     System.out.println("Response from Cache sent to Own Node");
-                }
-                else{
+                } else {
 
                     List<String> cachelist = new ArrayList<String>();
 
-                    String line = "";
+                    String line;
                     String splitBy = ", ";
-                    try
-                    {
+                    try {
                         //parsing a CSV file into BufferedReader class constructor
                         BufferedReader br = new BufferedReader(new FileReader(
-                                SearchConstants.CacheDirectory + filesList[i]));
+                                SearchConstants.CacheDirectory + s));
 
                         while ((line = br.readLine()) != null)   //returns a Boolean value
                         {
                             String[] a = line.split(splitBy);
-                            for(int j = 0; j<a.length; j++){
-                                cachelist.add(a[j]);
+                            for (String value : a) {
+                                cachelist.add(value);
                             }
                             //cachelist.add(line);
                         }
-                        QueryManager.createResultFile(cachelist);
-                       // createFile.createResultFile(cachelist);
-                        System.out.println("Response from Cache sent to Peer Node");
-                    }
-                    catch (IOException e)
-                    {
+
+                        QueryManager q = new QueryManager();
+                        q.createResultFile(cachelist, sequence, keyword, nodeid, ipaddress,
+                                portaddress, transport, neighbornode, "Cache");
+                       // System.out.println("Response from Cache sent to Peer Node");
+                    } catch (IOException e) {
                         System.out.println("error");
                         e.printStackTrace();
                     }
@@ -96,6 +99,5 @@ public class SearchMethod {
             }
         }
     }
-
 }
 
