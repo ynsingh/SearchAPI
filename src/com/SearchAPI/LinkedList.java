@@ -3,14 +3,9 @@ package com.SearchAPI;
 import java.io.*;
 import java.io.File;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
-
-// Java program to implement a Singly Linked List
 public class LinkedList {
 
     public static LinkedList list = new LinkedList();
@@ -28,10 +23,11 @@ public class LinkedList {
         String data6;
         int data7;
         String data8;
+        String data9;
         Node next;
 
         // Constructor
-        Node(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8) {
+        Node(String d1, String d2, String d3, String d4, String d5, String d6, int d7, String d8, String d9) {
             data1 = d1;
             data2 = d2;
             data3 = d3;
@@ -40,6 +36,7 @@ public class LinkedList {
             data6 = d6;
             data7 = d7;
             data8 = d8;
+            data9 = d9;
             next = null;
         }
     }
@@ -47,11 +44,11 @@ public class LinkedList {
     // **************INSERTION**************
 
     // Method to insert a new node in Broadcast Query Table
-    public static LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4,
-                                    String data5, String data6, int data7, String data8) {
+    public LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4,
+                                    String data5, String data6, int data7, String data8, String data9) {
         // Create a new node with given data
         //String data6 = TimeStamp.currentTime();
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8, data9);
         new_node.next = null;
 
         // If the Linked List is empty,
@@ -75,12 +72,10 @@ public class LinkedList {
     }
 
 
-
-
     // **************TRAVERSAL**************
 
     // Method to print the LinkedList.
-    public static void printList(LinkedList list) {
+    public void printList(LinkedList list) {
         Node currNode = list.head;
 
         System.out.print("\nBroadcast Query Table: \n");
@@ -96,6 +91,7 @@ public class LinkedList {
             System.out.print(currNode.data6 + " ");
             System.out.print(currNode.data7 + " ");
             System.out.print(currNode.data8 + " ");
+            System.out.print(currNode.data9 + " ");
 
             System.out.println("\n");
 
@@ -105,34 +101,11 @@ public class LinkedList {
         System.out.println("\n");
     }
 
-    // Method to print the LinkedList by key.
-    public static void printKey(LinkedList listname, String key)
-    {
-        Node currNode = listname.head;
-        System.out.print("\nLinkedList by Key: \n");
-
-        while (currNode != null) {
-
-            if(currNode.data1.equals(key))
-            {
-                System.out.print(currNode.data1 + " ");
-                System.out.print(currNode.data2 + " ");
-                System.out.print(currNode.data3 + " ");
-                System.out.print(currNode.data4 + " ");
-                System.out.print(currNode.data5 + " ");
-                System.out.print(currNode.data6 + " ");
-                System.out.print(currNode.data7 + " ");
-                System.out.print(currNode.data8 + " ");
-            }
-            currNode = currNode.next;
-        }
-        System.out.println("\n");
-    }
 
     // **************DELETION BY KEY**************
 
     // Method to delete a node in the LinkedList by KEY
-    public static LinkedList deleteByKey(LinkedList list, String key) {
+    public LinkedList deleteByKey(LinkedList list, String key) {
         // Store head node
         Node currNode = list.head, prev = null;
 
@@ -186,22 +159,13 @@ public class LinkedList {
         return list;
     }
 
-    public static String readLineByLine(String filePath) {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s).append(" "));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return contentBuilder.toString();
-    }
 
 
     // Method to insert all nodes from saved file to Broadcast Query Table
-    public static LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4,
-                                       String data5, String data6, int data7, String data8) {
+    public LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4,
+                                       String data5, String data6, int data7, String data8, String data9) {
         // Create a new node with given data
-        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8);
+        Node new_node = new Node(data1, data2, data3, data4, data5, data6, data7, data8, data9);
         new_node.next = null;
 
         // If the Linked List is empty,
@@ -224,18 +188,13 @@ public class LinkedList {
         return list;
     }
 
-    public static void loadList(LinkedList listname) {
+    public void loadList(LinkedList listname) {
 
-        String line = "";
+        var line = "";
         try
         {
             //parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader(
-                    "/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv"));
-
-            //if((line = br.readLine()) == null){
-
-            //}
+            BufferedReader br = new BufferedReader(new FileReader(SearchConstants.BroadcastQueryList));
 
             while ((line = br.readLine()) != null)   //returns a Boolean value
             {
@@ -248,7 +207,8 @@ public class LinkedList {
                 String d6 = arrSplit[5];
                 int d7 = Integer.parseInt(arrSplit[6]);
                 String d8 = arrSplit[7];
-                oldInsert(listname, d1, d2, d3, d4, d5, d6, d7, d8);
+                String d9 = arrSplit[8];
+                oldInsert(listname, d1, d2, d3, d4, d5, d6, d7, d8, d9);
             }
         }
         catch (IOException e)
@@ -260,7 +220,7 @@ public class LinkedList {
     }
 
 
-    public static void saveList(LinkedList listname) {
+    public void saveList(LinkedList listname) {
         try {
             File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv");
             PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -268,9 +228,7 @@ public class LinkedList {
             while (currNode != null) {
                 texttosave.println(currNode.data1 + ", " + currNode.data2 + ", " + currNode.data3
                        + ", " + currNode.data4 + ", " + currNode.data5 + ", " + currNode.data6 +
-                        ", " + currNode.data7 + ", " + currNode.data8);
-                //texttosave.println(currNode.data1 + ":" + currNode.data2 + ":" + currNode.data3
-                //                + ":" + currNode.data4 + ":" + currNode.data5 + ":" + currNode.data6);
+                        ", " + currNode.data7 + ", " + currNode.data8 + ", " + currNode.data9);
                 currNode = currNode.next;
             }
             texttosave.close();
@@ -280,7 +238,7 @@ public class LinkedList {
     }
 
     //search any sequencenumber in list
-    public static Boolean searchinList(LinkedList listname, String i) {
+    public Boolean searchinList(LinkedList listname, String i) {
         boolean sequencepresent = false;
         if (listname.head == null) {
             return sequencepresent;
@@ -301,7 +259,32 @@ public class LinkedList {
         }
     }
 
-    public static boolean checkDuplicateQuery(LinkedList listname, String i, String s) {
+    //search any sequencenumber in list and send sourceNodeID
+    public String[] getSourceIDfromList(LinkedList listname, String i) {
+
+        String[] a =new String[2];
+        a[0] = "0";  a[1] = "0";
+        if (listname.head != null) {
+            //int index = 1;
+            Node temp = listname.head;
+
+            while (temp != null) {
+
+                if (temp.data1.equals(i)) {
+                    a[0] = temp.data3;
+                    a[1] = temp.data9;
+                    break;
+                }
+                temp = temp.next;
+            }
+        }
+        return a ;
+    }
+
+
+
+
+    public boolean checkDuplicateQuery(LinkedList listname, String i) {
 
         boolean duplicate = false;
 
@@ -315,8 +298,8 @@ public class LinkedList {
 
             while (temp != null) {
 
-                // Returns the index of that particular element if found.
-                if (temp.data1.equals(i) && temp.data2.equals(s)) {
+                // Returns the index of that particular sequence if found.
+                if (temp.data1.equals(i)) {
                     duplicate = true;
                     break;
                 }
@@ -327,28 +310,9 @@ public class LinkedList {
         }
     }
 
-    public static String getQueryString(LinkedList listname, String i) {
-        String query = "";
-        if (listname.head == null) {
-            return query;
-        }
-        else {
 
-            Node temp = listname.head;
 
-            while (temp != null) {
-
-                if (temp.data1.equals(i)) {
-                    query = temp.data2;
-                    break;
-                }
-                temp = temp.next;
-            }
-            return query;
-        }
-    }
-
-    public static void deleteByTimestamps(LinkedList listname) {
+    public void deleteByTimestamps(LinkedList listname) {
 
         if (listname.head == null) {
 
@@ -360,26 +324,28 @@ public class LinkedList {
                 while (temp != null) {
 
                     String[] arr = temp.data8.split("\\.");
-                    int entry_month = Integer.valueOf(arr[0]);
-                    int entry_day = Integer.valueOf(arr[1]);
-                    int entry_hour = Integer.valueOf(arr[2]);
-                    int entry_minute = Integer.valueOf(arr[3]);
+                    int entry_month = Integer.parseInt(arr[0]);
+                    int entry_day = Integer.parseInt(arr[1]);
+                    int entry_hour = Integer.parseInt(arr[2]);
+                  //  int entry_minute = Integer.parseInt(arr[3]);
 
-
-                    String[] arr1 = TimeStamp.currentTime().split("\\.");
-                    int current_month = Integer.valueOf(arr1[0]);
-                    int current_day = Integer.valueOf(arr1[1]);
-                    int current_hour = Integer.valueOf(arr1[2]);
-                    int current_minute = Integer.valueOf(arr1[3]);
+                    //String[] arr1 = TimeStamp.currentTime().split("\\.");
+                    String[] arr1 = currentTime().split("\\.");
+                    int current_month = Integer.parseInt(arr1[0]);
+                    int current_day = Integer.parseInt(arr1[1]);
+                    int current_hour = Integer.parseInt(arr1[2]);
+                 //   int current_minute = Integer.parseInt(arr1[3]);
 
 
                    if((entry_month != current_month) || (entry_day != current_day)) {
-                        LinkedList.deleteByKey(LinkedList.list, temp.data1);
-                        LinkedList.saveList(LinkedList.list);
+                       LinkedList l = new LinkedList();
+                       l.deleteByKey(LinkedList.list, temp.data1);
+                       l.saveList(LinkedList.list);
                     }
                     else if((entry_hour != current_hour) && (entry_hour != current_hour-1)){
-                        LinkedList.deleteByKey(LinkedList.list, temp.data1);
-                        LinkedList.saveList(LinkedList.list);
+                       LinkedList l = new LinkedList();
+                       l.deleteByKey(LinkedList.list, temp.data1);
+                       l.saveList(LinkedList.list);
                     }
 
                     temp = temp.next;
@@ -387,23 +353,16 @@ public class LinkedList {
             }
          catch (Exception e) {
             System.err.println(e.getMessage());
-        }
+             }
         }
     }
 
+    private final SimpleDateFormat sdf = new SimpleDateFormat("MM.dd.HH.mm.ss.SSS");
 
+    public String currentTime() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return sdf.format(timestamp);
 
+    }
 
-
-
-
-    /*public static void main(String[] args) {
-
-        LinkedList list = new LinkedList();
-        loadList(list);
-        saveList(list);
-        printList(list);
-        System.out.println(searchinList(list, 97));
-
-    }*/
 }
