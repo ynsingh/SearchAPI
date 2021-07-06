@@ -4,19 +4,23 @@ import org.apache.lucene.queryParser.ParseException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * This Class is responsible for editing Query Broadcast Table
+ * and forwarding, deleting or discarding queries.
+ */
+
 public class ForwardQuery {
+
+    /**
+     * This method id for propagating Own Node Query
+     * to peers and adds an entry to Query Broadcast Table
+     */
 
     public void forwardOwnQuery(LinkedList listname, String data1, String data2, String data3,
                                         String data4, String data5, String data6, int data7, String data8, String data9)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
 
         LinkedList l = new LinkedList();
-        if(l.checkDuplicateQuery(listname, data1))
-        {
-            System.out.println("Global Query received from Own Node, Query is Duplicate");
-            //do nothing now
-        }
-        else {  // Query is not duplicate and is to be added in Broadcast Query Table
 
             System.out.println("Global Query received from Own Node, Query is Unique");
 
@@ -29,10 +33,12 @@ public class ForwardQuery {
             SearchMethod s = new SearchMethod();
             s.findInCache(data1, data2, data3, data4, data5, data6, data9, true);
             //find in cache till global response arrives
-        }
     }
 
-
+    /**
+     * This method id for propagating Peer Node Query
+     * to neighbors and adds an entry to Query Broadcast Table
+     */
 
     public void forwardPeerQuery(LinkedList listname, String data1, String data2, String data3,
                                         String data4, String data5, String data6, int data7, String data8, String data9)
@@ -40,20 +46,20 @@ public class ForwardQuery {
         LinkedList l = new LinkedList();
         if(l.checkDuplicateQuery(listname, data1))
         {
-            System.out.println("Peer Query is Duplicate");
+            System.out.println("Peer Query received is Duplicate");
             //do nothing now
         }
         else {  // Query is not duplicate and is to be added in Broadcast Query Table
 
 
-            System.out.println("Peer Query is Unique");
+            System.out.println("Peer Query received is Unique");
 
             l.insert(listname, data1, data2, data3, data4, data5, data6, data7, data8, data9);
             l.saveList(LinkedList.list);
 
             SearchMethod s = new SearchMethod();
             LuceneTester c = new LuceneTester();
-            c.search(data1, data2, data3, data4, data5, data6, data9);
+            c.query(data1, data2, data3, data4, data5, data6, data9);
 
             //forward response from cache
             s.findInCache(data1, data2, data3, data4, data5, data6, data9, false);
@@ -65,7 +71,5 @@ public class ForwardQuery {
             }
             else System.out.println("TTL Expired");
         }
-
     }
-
 }

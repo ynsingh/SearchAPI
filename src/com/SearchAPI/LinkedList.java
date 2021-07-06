@@ -6,6 +6,11 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
+/**
+ * This Class is responsible for contruction and management
+ * operations on Query Broadcast Table
+ */
+
 public class LinkedList {
 
     public static LinkedList list = new LinkedList();
@@ -41,9 +46,9 @@ public class LinkedList {
         }
     }
 
-    // **************INSERTION**************
-
-    // Method to insert a new node in Broadcast Query Table
+    /** Method to insert a new node in Broadcast Query Table
+     * returns a Linked List Object
+     */
     public LinkedList insert(LinkedList list, String data1, String data2, String data3, String data4,
                                     String data5, String data6, int data7, String data8, String data9) {
         // Create a new node with given data
@@ -72,9 +77,8 @@ public class LinkedList {
     }
 
 
-    // **************TRAVERSAL**************
+    /** Method to print the LinkedList */
 
-    // Method to print the LinkedList.
     public void printList(LinkedList list) {
         Node currNode = list.head;
 
@@ -101,10 +105,8 @@ public class LinkedList {
         System.out.println("\n");
     }
 
+    /** Method to delete a node in the LinkedList by KEY */
 
-    // **************DELETION BY KEY**************
-
-    // Method to delete a node in the LinkedList by KEY
     public LinkedList deleteByKey(LinkedList list, String key) {
         // Store head node
         Node currNode = list.head, prev = null;
@@ -160,8 +162,8 @@ public class LinkedList {
     }
 
 
+    /** Method to insert a nodes from saved file to Broadcast Query Table initially */
 
-    // Method to insert all nodes from saved file to Broadcast Query Table
     public LinkedList oldInsert(LinkedList list, String data1, String data2, String data3, String data4,
                                        String data5, String data6, int data7, String data8, String data9) {
         // Create a new node with given data
@@ -179,7 +181,6 @@ public class LinkedList {
             while (last.next != null) {
                 last = last.next;
             }
-
             // Insert the new_node at last node
             last.next = new_node;
         }
@@ -188,8 +189,9 @@ public class LinkedList {
         return list;
     }
 
-    public void loadList(LinkedList listname) {
+    /** Method to Load initial values all to Broadcast Query Table on Reboot */
 
+    public void loadList(LinkedList listname) {
         var line = "";
         try
         {
@@ -216,13 +218,13 @@ public class LinkedList {
             System.out.println("error");
             e.printStackTrace();
         }
-
     }
 
+    /** Method to save entries of Query Broadcast Table to a File */
 
     public void saveList(LinkedList listname) {
         try {
-            File file = new File("/Volumes/Disk/My Docs/_M Tech/Codes/SearchAPI/listData.csv");
+            File file = new File(SearchConstants.BroadcastQueryList);
             PrintWriter texttosave = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             Node currNode = listname.head;
             while (currNode != null) {
@@ -237,7 +239,8 @@ public class LinkedList {
         }
     }
 
-    //search any sequencenumber in list
+    /** Method to search any sequencenumber in list */
+
     public Boolean searchinList(LinkedList listname, String i) {
         boolean sequencepresent = false;
         if (listname.head == null) {
@@ -246,9 +249,7 @@ public class LinkedList {
         else {
             //int index = 1;
             Node temp = listname.head;
-
             while (temp != null) {
-
                 if (temp.data1.equals(i)) {
                     sequencepresent = true;
                     break;
@@ -259,7 +260,8 @@ public class LinkedList {
         }
     }
 
-    //search any sequencenumber in list and send sourceNodeID
+    /** Method search any sequencenumber in list and return sourceNodeID */
+
     public String[] getSourceIDfromList(LinkedList listname, String i) {
 
         String[] a =new String[2];
@@ -267,9 +269,7 @@ public class LinkedList {
         if (listname.head != null) {
             //int index = 1;
             Node temp = listname.head;
-
             while (temp != null) {
-
                 if (temp.data1.equals(i)) {
                     a[0] = temp.data3;
                     a[1] = temp.data9;
@@ -281,8 +281,7 @@ public class LinkedList {
         return a ;
     }
 
-
-
+    /** Method to Check a Query for Duplication before inserting in List */
 
     public boolean checkDuplicateQuery(LinkedList listname, String i) {
 
@@ -291,13 +290,9 @@ public class LinkedList {
         if (listname.head == null) {
             return false;
         }
-
         else {
-
             Node temp = listname.head;
-
             while (temp != null) {
-
                 // Returns the index of that particular sequence if found.
                 if (temp.data1.equals(i)) {
                     duplicate = true;
@@ -305,12 +300,12 @@ public class LinkedList {
                 }
                 temp = temp.next;
             }
-
             return duplicate;
         }
     }
 
 
+    /**  Method to Delete old entries in List */
 
     public void deleteByTimestamps(LinkedList listname) {
 
@@ -357,12 +352,11 @@ public class LinkedList {
         }
     }
 
+    /**  Method to find Current System Time for use in List */
+    
     private final SimpleDateFormat sdf = new SimpleDateFormat("MM.dd.HH.mm.ss.SSS");
-
     public String currentTime() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return sdf.format(timestamp);
-
     }
-
 }

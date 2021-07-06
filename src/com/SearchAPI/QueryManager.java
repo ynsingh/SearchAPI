@@ -2,6 +2,8 @@ package com.SearchAPI;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,16 +20,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * This Class is has all major functionalities of
+ * Distributed Search Library
+ */
+
 public class QueryManager {
 
     public static Buffer Buffer;
+
+    /**
+     * The Load Method loads initial instance of Buffers,
+     * Query Broadcast List and starts the Management Thread
+     */
 
     public static void Load(){
 
@@ -37,34 +48,14 @@ public class QueryManager {
         a.loadList(LinkedList.list);
        // a.printList(LinkedList.list);
 
-        ManagementThread threadObject = new ManagementThread();
+        MaintenanceThread threadObject = new MaintenanceThread();
         threadObject.start();
     }
 
-    public static void reloadIDS(){
-        getselfID();
-    }
-
-
-    public static void getselfID() {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder;
-        try {
-            documentBuilder = builderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(SearchConstants.NeighborTable);
-            doc.getDocumentElement().normalize();
-
-            SearchConstants.selfNodeID = doc.getDocumentElement().getAttribute("SELF_NODE_ID");
-            SearchConstants.selfIPAddress = doc.getDocumentElement().getAttribute("SELF_IP_ADDRESS");
-            SearchConstants.selfPortAddress = doc.getDocumentElement().getAttribute("SELF_PORT_ADDRESS");
-            SearchConstants.selfTransport = doc.getDocumentElement().getAttribute("SELF_TRANSPORT");
-
-        }
-        catch (ParserConfigurationException | SAXException | IOException e) {
-        }
-    }
-
-
+    /**
+     *This method is called for initiating Query Process
+     *The Searched Keyword is an input argument
+     */
 
     public void query(String queryString, Boolean Global) throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, IOException, ParseException {
@@ -84,14 +75,16 @@ public class QueryManager {
         }
         else{
             //Query own node Data
-            System.out.println("Local Query received from Own Node");
+            System.out.println("Received Query from Own Node to search Local Directory");
             LuceneTester c = new LuceneTester();
-            c.dolocalsearch(queryString);
+            c.querylocal(queryString);
         }
     }
 
-
-
+    /**
+     * This method is used to propagate a valid Query
+     * to output buffer
+     */
 
     public void createQueryFile(String d1, String d2, String d3, String d4, String d5,
                                 String d6, int d7, String d8, String d9 ) {
@@ -155,7 +148,9 @@ public class QueryManager {
 
             transformer.transform(source, result);
 
-            System.out.println("Query forwarded to Buffer_out");
+            File f = new File(SearchConstants.OutputBuffer+"Query-"+d1+".xml");
+            QueryManager.Buffer.addFileToOutputBuffer(f);
+            System.out.println("Query forwarded to Output Buffer");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -164,12 +159,15 @@ public class QueryManager {
         }
     }
 
+    /**
+     * This method creates a response for a Peer Query
+     * An xml response file object is created
+     */
+
     public void createResultFile(List result, String sequence, String searchQuery, String nodeid, String ipaddress,
                                  String portaddress, String transport, String neighbornode, String ResponseSource) {
 
         try {
-           // String[] a = ForwardQuery.elements();
-
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -220,6 +218,11 @@ public class QueryManager {
                     "Response"+"@" + sequence + "@" + searchQuery + "@" + sourceofresponse + "@" + ".xml"));
 
             transformer.transform(source, resultfile);
+
+            File f = new File(SearchConstants.OutputBuffer +
+                    "Response"+"@" + sequence + "@" + searchQuery + "@" + sourceofresponse + "@" + ".xml");
+            QueryManager.Buffer.addFileToOutputBuffer(f);
+
             System.out.println(Src + " Response Forwarded");
 
         } catch (ParserConfigurationException pce) {
@@ -229,28 +232,29 @@ public class QueryManager {
         }
     }
 
+    /**
+     * This method reads all types of incoming files for Distributed Search Library.
+     *  File objects received at input Buffer are input to this method
+     */
 
 
-
-    public void readIncomingFile(File xmlFile) {
+    public void readFile(File xmlFile) {
 
         ArrayList<Object> readfile_elements = new ArrayList<>();
 
         try {
-
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
-
             doc.getDocumentElement().normalize();
 
             if(doc.getDocumentElement().getNodeName().equals("Queryfile") )
             {
-                System.out.println("Peer Query Recieved");
-
                 NodeList nList = doc.getElementsByTagName("query");
-
                 Node nNode = nList.item(0);
+
+                String QueryTime = null;
+                Boolean expiredquery = false;
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE)
                 {
@@ -267,22 +271,49 @@ public class QueryManager {
                     readfile_elements.add(eElement.getElementsByTagName("timeStamp").item(0).getTextContent());
                     readfile_elements.add(eElement.getElementsByTagName("NeighborNodeID").item(0).getTextContent());
 
+                    QueryTime = eElement.getElementsByTagName("timeStamp").item(0).getTextContent();
+
                 }
 
-                ForwardQuery f = new ForwardQuery();
-                f.forwardPeerQuery(LinkedList.list, String.valueOf(readfile_elements.get(0)),
-                        String.valueOf(readfile_elements.get(1)), String.valueOf(readfile_elements.get(2)),
-                        String.valueOf(readfile_elements.get(3)), String.valueOf(readfile_elements.get(4)),
-                        String.valueOf(readfile_elements.get(5)),
-                        Integer.parseInt(String.valueOf(readfile_elements.get(6))),
-                        String.valueOf(readfile_elements.get(7)), String.valueOf(readfile_elements.get(8)));
+               // if timestamp is of last 1 hour
 
+                String[] time = QueryTime.split("\\.");
+                int entry_month = Integer.parseInt(time[0]);
+                int entry_day = Integer.parseInt(time[1]);
+                int entry_hour = Integer.parseInt(time[2]);
+
+                final SimpleDateFormat sdf = new SimpleDateFormat("MM.dd.HH.mm.ss.SSS");
+                java.sql.Timestamp currenttime = new Timestamp(System.currentTimeMillis());
+                String t = sdf.format(currenttime);
+                String[] arr = t.split("\\.");
+                int current_month = Integer.parseInt(arr[0]);
+                int current_day = Integer.parseInt(arr[1]);
+                int current_hour = Integer.parseInt(arr[2]);
+
+                if( (entry_month != current_month) || (entry_day != current_day) ||
+                        ((entry_hour != current_hour) && (entry_hour != current_hour-1))) {
+                    expiredquery = true;
+                    System.out.println("Expired Peer Query was received");
+                }
+
+
+
+                if(!expiredquery) {
+                    ForwardQuery f = new ForwardQuery();
+                    f.forwardPeerQuery(LinkedList.list, String.valueOf(readfile_elements.get(0)),
+                            String.valueOf(readfile_elements.get(1)), String.valueOf(readfile_elements.get(2)),
+                            String.valueOf(readfile_elements.get(3)), String.valueOf(readfile_elements.get(4)),
+                            String.valueOf(readfile_elements.get(5)),
+                            Integer.parseInt(String.valueOf(readfile_elements.get(6))),
+                            String.valueOf(readfile_elements.get(7)), String.valueOf(readfile_elements.get(8)));
+
+                }
             }//for query
 
             else if(doc.getDocumentElement().getNodeName().equals("Responsefile") ) {
                 NodeList nList = doc.getElementsByTagName("result");
 
-                System.out.println("Peer Response Received");
+                //System.out.println("Peer Response Received");
 
                 for (int temp = 0; temp < nList.getLength(); temp++) {
 
@@ -294,8 +325,6 @@ public class QueryManager {
                         readfile_elements.add(eElement.getElementsByTagName("file_address").item(0).getTextContent());
                     }
                 }
-
-
 
                // handleResults(xmlFile.getName(), readfile_elements);// Display and Save to Cache
                 String[] arr = xmlFile.getName().split("@");
@@ -313,7 +342,6 @@ public class QueryManager {
                     if (l.searchinList(LinkedList.list, sequence)) {
 
                         File file = new File(SearchConstants.CacheDirectory + searchkey + "@" + peersource + ".csv");
-
                         if (!file.exists()) {
                             file.createNewFile();
                         }
@@ -328,16 +356,14 @@ public class QueryManager {
                         texttosave.close();
 
                         //if own query also display results
-                       // LinkedList l = new LinkedList();
+                        // LinkedList l = new LinkedList();
 
                         if(data[0].equals(SearchConstants.selfNodeID)){
-
                             Path source = Paths.get(SearchConstants.CacheDirectory + searchkey + "@" + peersource + ".csv");
                             Path destination = Paths.get(SearchConstants.OutputBuffer + searchkey + "@" + peersource + ".csv");
                             Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
                             System.out.println("Response sent for Display");
                         }
-
                         System.out.println("Response Saved to Cache");
                     }
                     else System.out.println("Response received for an expired query");
@@ -345,8 +371,6 @@ public class QueryManager {
                 } catch(Exception e){
                     System.out.println("error");
                 }
-
-
 
                 //Send response also to neighbor
                 String SourceNodeID = data[0];
@@ -357,9 +381,7 @@ public class QueryManager {
                     createResultFile(readfile_elements, sequence, searchkey,
                             peersource,"","","", NeighborNodeID, "Neighbor");
                 }
-
             }
-
              xmlFile.delete();
         } catch (Exception e) {
             e.printStackTrace();

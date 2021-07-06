@@ -14,7 +14,7 @@ public class LuceneTester {
     Indexer indexer;
     Searcher searcher;
 
-    private void query( String sequence, String searchQuery, String nodeid, String ipaddress,
+    public void query( String sequence, String searchQuery, String nodeid, String ipaddress,
                        String portaddress, String transport, String neighbornode) {
         LuceneTester tester;
 
@@ -30,7 +30,7 @@ public class LuceneTester {
         }
     }
 
-    private void querylocal(String qry) {
+    public void querylocal(String qry) {
         LuceneTester tester;
 
         try {
@@ -53,7 +53,7 @@ public class LuceneTester {
         indexer.close();
     }
 
-        public void search(String sequence, String searchQuery, String nodeid, String ipaddress,
+        private void search(String sequence, String searchQuery, String nodeid, String ipaddress,
                             String portaddress, String transport, String neighbornode) throws IOException, ParseException {
         searcher = new Searcher(indexDir);
         TopDocs hits = searcher.search(searchQuery);
@@ -81,7 +81,7 @@ public class LuceneTester {
 
     }
 
-    public void dolocalsearch(String searchQuery) throws IOException, ParseException {
+    private void dolocalsearch(String searchQuery) throws IOException, ParseException {
         searcher = new Searcher(indexDir);
         TopDocs hits = searcher.search(searchQuery);
 

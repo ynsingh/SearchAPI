@@ -127,14 +127,21 @@ public class Buffer {
     /**
      * This method is used to fetch file from the input buffer one by one.
      */
-    public void getFileFromInputBuffer() {
+  /*  public void getFileFromInputBuffer() {
         File file = Buffer.fetchFromInputBuffer();
         if (!(file == null)) {
             //System.out.println(file);
             //readFile.readIncomingFile(file);
             QueryManager q = new QueryManager();
-            q.readIncomingFile(file);
+            q.readFile(file);
         }
+    }
+
+   */
+
+    public File getFileFromInputBuffer() {
+        File file = Buffer.fetchFromInputBuffer();
+            return file;
     }
 
     int sizeofInputBuffer() {
