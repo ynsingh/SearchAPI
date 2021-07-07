@@ -22,9 +22,9 @@ public class TestingThread extends Thread{
                 for (int i = 0; i < files.length; i++) {
                     //System.out.println("File Received in Buffer -"+files[i].getName());
 
-                   // Main.Buffer.addFileToInputBuffer(files[i]);   //reqd
+                    QueryManager.Buffer.addFileToInputBuffer(files[i]);   //reqd
 
-                    // files[i].delete();
+
                 }
                 Thread.sleep(5000);
 

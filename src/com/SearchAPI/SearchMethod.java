@@ -36,7 +36,9 @@ public class SearchMethod {
         }
         texttosave.close();
 
-        System.out.println("Response Saved to Cache");
+        QueryManager.Buffer.addFileToOutputBuffer(file);
+
+        System.out.println("Local Response Sent to Output Buffer");
     }
 
 
@@ -65,8 +67,13 @@ public class SearchMethod {
                     Path source = Paths.get(SearchConstants.CacheDirectory + s);
                     Path destination = Paths.get(SearchConstants.OutputBuffer + s);
                     Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-                    // System.out.println(filesList[i]);
-                    System.out.println("Response from Cache sent to Own Node");
+
+
+                    File file = new File(SearchConstants.OutputBuffer + s);
+                    QueryManager.Buffer.addFileToOutputBuffer(file);
+
+
+                    System.out.println("Response from Cache sent to Output Buffer");
                 } else {
 
                     List<String> cachelist = new ArrayList<String>();
